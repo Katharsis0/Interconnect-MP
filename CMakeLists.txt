@@ -8,10 +8,9 @@ find_package(Threads REQUIRED)
 
 add_executable(Interconnect-MP
         src/main.cpp
-        src/PE/PE.cpp
-        src/PE/Cache.cpp
-        src/PE/InstructionMemory.cpp
-        src/Messages/Message.cpp
+        src/MESI/MESIProtocol.cpp
+        include/MESI/MESIState.h
+        include/MESI/MESIProtocol.h
 )
 
 target_include_directories(Interconnect-MP PRIVATE include)

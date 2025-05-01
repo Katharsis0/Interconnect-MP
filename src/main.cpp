@@ -1,16 +1,22 @@
+#include "MESI/MESIProtocol.h"
 #include <iostream>
 
-// TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 int main() {
-    // TIP Press <shortcut actionId="RenameElement"/> when your caret is at the <b>lang</b> variable name to see how CLion can help you rename it.
-    auto lang = "C++";
-    std::cout << "Hello and welcome to " << lang << "!\n";
+    MESIProtocol proto(0);
+    uint32_t addr = 0xABC;
 
-    for (int i = 1; i <= 5; i++) {
-        // TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        std::cout << "i = " << i << std::endl;
-    }
+    std::cout << "Estado tras lectura: ";
+    auto state = proto.handleRead(addr);
+    std::cout << static_cast<int>(state) << "\n"; // Debería ser Exclusive (2)
+
+    std::cout << "Estado tras escritura: ";
+    state = proto.handleWrite(addr);
+    std::cout << static_cast<int>(state) << "\n"; // Debería ser Modified (3)
+
+    proto.invalidate(addr);
+    std::cout << "Estado tras invalidación: ";
+    state = proto.getState(addr);
+    std::cout << static_cast<int>(state) << "\n"; // Debería ser Invalid (0)
 
     return 0;
-    // TIP See CLion help at <a href="https://www.jetbrains.com/help/clion/">jetbrains.com/help/clion/</a>. Also, you can try interactive lessons for CLion by selecting 'Help | Learn IDE Features' from the main menu.
 }

@@ -1,3 +1,3 @@
-/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug/CMakeFiles/Interconnect-MP.dir
-/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles/Interconnect-MP.dir
+/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles/rebuild_cache.dir

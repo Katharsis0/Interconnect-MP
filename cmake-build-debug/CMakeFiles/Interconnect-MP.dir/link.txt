@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/Interconnect-MP.dir/link.d "CMakeFiles/Interconnect-MP.dir/src/main.cpp.o" "CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o" -o Interconnect-MP
