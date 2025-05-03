@@ -60,6 +60,10 @@ private:
     std::condition_variable messagesCV_;
 
     Statistics stats_;
+
+
+private:
+    MESIProtocol mesiProtocol_;  // Instancia de protocolo MESI
 };
 
 

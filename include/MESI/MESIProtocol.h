@@ -17,6 +17,7 @@ public:
 
 private:
     uint8_t pe_id_;
+    //guarda un MESIState por cada dirección de memoria en uint32_t
     std::unordered_map<uint32_t, MESIState> lineStates_;
 };
 

@@ -9,6 +9,8 @@ MESIState MESIProtocol::getState(uint32_t address) const {
     return MESIState::Invalid;
 }
 
+// Esto simula que si se lee una dirección inválida, se trae el dato desde memoria si se marca como exclusivo (porque ningún otro PE lo tiene en teoría).
+
 MESIState MESIProtocol::handleRead(uint32_t address) {
     auto& state = lineStates_[address];
     switch (state) {
