@@ -6,8 +6,9 @@
 
 #include <iostream>
 
-PE::PE(uint8_t id, uint8_t qos, Interconnect* interconnect)
-    : id_(id), qos_(qos), interconnect_(interconnect), running_(false) {
+PE::PE(uint8_t id, uint8_t qos, Interconnect* interconnect, EventClock& clock)
+    : id_(id), qos_(qos), interconnect_(interconnect), running_(false), clock_(clock),
+    instructionMemory_(), cache_(), mesiProtocol_(id){
     // Inicializar estadísticas
     stats_ = Statistics{};
 }
@@ -44,7 +45,7 @@ void PE::receiveMessage(const Message& msg) {
 void PE::run() {
     while (running_ && instructionMemory_.hasNext()) {
         Instruction instr = instructionMemory_.getNext();
-        uint32_t addr = instr.address; // asumimos que tiene esta propiedad
+        uint32_t addr = instr.getAddress(); // asumimos que tiene esta propiedad
 
         if (instr.isRead()) {
             MESIState state = mesiProtocol_.handleRead(addr);
@@ -56,9 +57,27 @@ void PE::run() {
                       << std::hex << addr << " nuevo estado " << static_cast<int>(state) << "\n";
         }
 
-        // estadísticas y espera artificial DEBE CAMBIARSE EL SLEEPP, ESTE ESTÄ DE PRUEBA
         stats_.instructionsExecuted++;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        // en lugar de sleep agregar evento para continuar luego
+        Event doneEvent;
+        doneEvent.timestamp = clock_.now() + 10;
+        doneEvent.pe_id = id_;
+        doneEvent.action = "instruction_done";
+
+        clock_.add_event(doneEvent);
+
+        //  Esperar evento para continuar
+        std::unique_lock<std::mutex> lock(pe_mutex_);
+        pe_cv_.wait(lock);
+    }
+}
+
+void PE::onEvent(const Event& event) {
+    if (event.action == "instruction_done") {
+        std::cout << "PE " << static_cast<int>(id_) << " reanudando ejecución\n";
+        std::unique_lock<std::mutex> lock(pe_mutex_);
+        pe_cv_.notify_one();
     }
 }
 
@@ -67,7 +86,3 @@ PE::Statistics PE::getStatistics() const {
     return stats_;
 }
 
-PE::PE(uint8_t id, uint8_t qos, Interconnect* interconnect)
-    : id_(id), qos_(qos), interconnect_(interconnect),
-      instructionMemory_(), cache_(), mesiProtocol_(id),
-      running_(false) {}

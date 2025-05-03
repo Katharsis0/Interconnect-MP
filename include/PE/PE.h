@@ -8,6 +8,7 @@
 
 
 #pragma once
+#include "../Clock/EventClock.h"
 
 #include <cstdint>
 #include <thread>
@@ -15,15 +16,17 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-#include "Messages/Messages.h"
-#include "PE/Cache.h"
-#include "PE/InstructionMemory.h"
+#include "../Messages/Messages.h"
+#include "../PE/Cache.h"
+#include "../PE/InstructionMemory.h"
+#include "../MESI/MESIProtocol.h"
+
 
 class Interconnect; // Declaración anticipada
 
 class PE {
 public:
-    PE(uint8_t id, uint8_t qos, Interconnect* interconnect);
+    PE(uint8_t id, uint8_t qos, Interconnect* interconnect, EventClock& clock);
     ~PE();
 
     void start();
@@ -32,6 +35,9 @@ public:
 
     // Métodos para recibir mensajes del Interconnect
     void receiveMessage(const Message& msg);
+
+
+    void onEvent(const Event& event);
 
     // Estadísticas
     struct Statistics {
@@ -42,6 +48,7 @@ public:
 
     Statistics getStatistics() const;
 
+
 private:
     void run(); // Función principal del thread del PE
 
@@ -50,6 +57,10 @@ private:
     Interconnect* interconnect_;
     std::thread thread_;
     bool running_;
+
+    EventClock& clock_;
+    std::mutex pe_mutex_;
+    std::condition_variable pe_cv_;
 
     InstructionMemory instructionMemory_;
     Cache cache_;
@@ -61,8 +72,6 @@ private:
 
     Statistics stats_;
 
-
-private:
     MESIProtocol mesiProtocol_;  // Instancia de protocolo MESI
 };
 

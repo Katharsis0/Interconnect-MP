@@ -6,14 +6,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Threads REQUIRED)
 
-add_executable(Interconnect-MP
-        src/main.cpp
-        src/MESI/MESIProtocol.cpp
-        include/MESI/MESIState.h
-        include/MESI/MESIProtocol.h
+# Incluir el directorio de headers
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+# Buscar automáticamente todos los .cpp y .h
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
+        ${CMAKE_SOURCE_DIR}/src/*.cpp
+        ${CMAKE_SOURCE_DIR}/include/*.h
 )
 
-target_include_directories(Interconnect-MP PRIVATE include)
+
+message(STATUS "Archivos fuente encontrados:")
+foreach(file ${SOURCES})
+    message(STATUS "${file}")
+endforeach()
+
+
+# Crear el ejecutable con todos los archivos encontrados
+add_executable(Interconnect-MP ${SOURCES})
 
 target_link_libraries(Interconnect-MP PRIVATE Threads::Threads)
 

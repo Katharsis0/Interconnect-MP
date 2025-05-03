@@ -7,7 +7,8 @@
 #pragma once
 
 #include <vector>
-#include "Messages/Messages.h"
+#include "../Messages/Messages.h"
+#include "../PE/Instruction.h"
 
 class InstructionMemory {
 public:
