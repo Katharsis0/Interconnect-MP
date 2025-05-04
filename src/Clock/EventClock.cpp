@@ -1,4 +1,6 @@
 #include "../../include/Clock/EventClock.h"
+#include "../../include/Global/Global.h"
+
 #include <iostream>
 
 void EventClock::add_event(const Event& e) {
@@ -24,14 +26,19 @@ void EventClock::run() {
 
         lock.unlock();
 
-        std::cout << "[T=" << current_time << "] Evento: " << e.action
-                  << " en PE " << e.pe_id << "\n";
+        {
+            std::lock_guard<std::mutex> cout_lock(cout_mutex);
+            std::cout << "[T=" << current_time << "] Evento: " << e.action
+                      << " en PE " << e.pe_id << "\n";
+        }
 
+        // Cout mutex no longer blocked
         if (handlers_.count(e.pe_id)) {
             handlers_[e.pe_id](e);
         }
     }
 }
+
 
 void EventClock::stop() {
     running_ = false;

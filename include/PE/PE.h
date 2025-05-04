@@ -9,6 +9,7 @@
 
 #pragma once
 #include "../Clock/EventClock.h"
+#include "../../include/Global/Global.h"
 
 #include <cstdint>
 #include <thread>

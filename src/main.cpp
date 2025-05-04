@@ -3,6 +3,7 @@
 #include "../include/PE/PE.h"
 #include "../include/PE/Instruction.h"
 #include "../include/Interconnect/Interconnect.h"
+#include "../include/Global/Global.h"
 
 
 #include <vector>

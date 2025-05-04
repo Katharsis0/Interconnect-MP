@@ -75,11 +75,13 @@ void PE::run() {
 
 void PE::onEvent(const Event& event) {
     if (event.action == "instruction_done") {
+        std::lock_guard<std::mutex> cout_lock(cout_mutex);
         std::cout << "PE " << static_cast<int>(id_) << " reanudando ejecución\n";
         std::unique_lock<std::mutex> lock(pe_mutex_);
-        pe_cv_.notify_one();
+        pe_cv_.notify_all();
     }
 }
+
 
 
 PE::Statistics PE::getStatistics() const {
