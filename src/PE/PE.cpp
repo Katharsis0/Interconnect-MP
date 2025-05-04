@@ -49,17 +49,18 @@ void PE::run() {
 
         if (instr.isRead()) {
             MESIState state = mesiProtocol_.handleRead(addr);
+            std::lock_guard<std::mutex> cout_lock(cout_mutex);
             std::cout << "PE " << static_cast<int>(id_) << " leyó dirección "
                       << std::hex << addr << " en estado " << static_cast<int>(state) << "\n";
         } else if (instr.isWrite()) {
             MESIState state = mesiProtocol_.handleWrite(addr);
+            std::lock_guard<std::mutex> cout_lock(cout_mutex);
             std::cout << "PE " << static_cast<int>(id_) << " escribió dirección "
                       << std::hex << addr << " nuevo estado " << static_cast<int>(state) << "\n";
         }
 
         stats_.instructionsExecuted++;
 
-        // en lugar de sleep agregar evento para continuar luego
         Event doneEvent;
         doneEvent.timestamp = clock_.now() + 10;
         doneEvent.pe_id = id_;
@@ -67,11 +68,14 @@ void PE::run() {
 
         clock_.add_event(doneEvent);
 
-        //  Esperar evento para continuar
         std::unique_lock<std::mutex> lock(pe_mutex_);
         pe_cv_.wait(lock);
     }
+
+    // Avisar que este PE terminó
+    clock_.notify_pe_finished(id_);
 }
+
 
 void PE::onEvent(const Event& event) {
     if (event.action == "instruction_done") {
