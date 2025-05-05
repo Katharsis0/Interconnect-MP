@@ -77,12 +77,26 @@ build CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o: CXX_COMPILE
   OBJECT_DIR = CMakeFiles/Interconnect-MP.dir
   OBJECT_FILE_DIR = CMakeFiles/Interconnect-MP.dir/src/PE
 
-build CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o: CXX_COMPILER__Interconnect-MP_unscanned_Debug /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Messages/Message.cpp || cmake_object_order_depends_target_Interconnect-MP
-  DEP_FILE = CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o.d
+build CMakeFiles/Interconnect-MP.dir/src/Memory/MainMemory.cpp.o: CXX_COMPILER__Interconnect-MP_unscanned_Debug /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Memory/MainMemory.cpp || cmake_object_order_depends_target_Interconnect-MP
+  DEP_FILE = CMakeFiles/Interconnect-MP.dir/src/Memory/MainMemory.cpp.o.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -I/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include
   OBJECT_DIR = CMakeFiles/Interconnect-MP.dir
-  OBJECT_FILE_DIR = CMakeFiles/Interconnect-MP.dir/src/Messages
+  OBJECT_FILE_DIR = CMakeFiles/Interconnect-MP.dir/src/Memory
+
+build CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o: CXX_COMPILER__Interconnect-MP_unscanned_Debug /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Interconnect/Interconnect.cpp || cmake_object_order_depends_target_Interconnect-MP
+  DEP_FILE = CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -I/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include
+  OBJECT_DIR = CMakeFiles/Interconnect-MP.dir
+  OBJECT_FILE_DIR = CMakeFiles/Interconnect-MP.dir/src/Interconnect
+
+build CMakeFiles/Interconnect-MP.dir/tests/test_system.cpp.o: CXX_COMPILER__Interconnect-MP_unscanned_Debug /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/tests/test_system.cpp || cmake_object_order_depends_target_Interconnect-MP
+  DEP_FILE = CMakeFiles/Interconnect-MP.dir/tests/test_system.cpp.o.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -I/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include
+  OBJECT_DIR = CMakeFiles/Interconnect-MP.dir
+  OBJECT_FILE_DIR = CMakeFiles/Interconnect-MP.dir/tests
 
 
 # =============================================================================
@@ -92,7 +106,7 @@ build CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o: CXX_COMPILER__I
 #############################################
 # Link the executable Interconnect-MP
 
-build Interconnect-MP: CXX_EXECUTABLE_LINKER__Interconnect-MP_Debug CMakeFiles/Interconnect-MP.dir/src/main.cpp.o CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o
+build Interconnect-MP: CXX_EXECUTABLE_LINKER__Interconnect-MP_Debug CMakeFiles/Interconnect-MP.dir/src/main.cpp.o CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o CMakeFiles/Interconnect-MP.dir/src/Memory/MainMemory.cpp.o CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o CMakeFiles/Interconnect-MP.dir/tests/test_system.cpp.o
   DEP_FILE = CMakeFiles/Interconnect-MP.dir/link.d
   FLAGS = -g
   LINK_FLAGS = -Wl,--dependency-file=CMakeFiles/Interconnect-MP.dir/link.d

@@ -11,7 +11,12 @@ add_executable(Interconnect-MP
         src/PE/PE.cpp
         src/PE/Cache.cpp
         src/PE/InstructionMemory.cpp
-        src/Messages/Message.cpp
+        include/Memory/MemorySlave.h
+        include/Memory/MainMemory.h
+        src/Memory/MainMemory.cpp
+        include/Interconnect/Interconnect.h
+        src/Interconnect/Interconnect.cpp
+        tests/test_system.cpp
 )
 
 target_include_directories(Interconnect-MP PRIVATE include)

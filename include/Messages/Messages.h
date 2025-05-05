@@ -1,19 +1,8 @@
-//
-// Created by katharsis on 4/28/25.
-//
-
-#ifndef MESSAGE_H
-#define MESSAGE_H
-
-
 #pragma once
 
-#include <cstdint>
 #include <vector>
-#include <variant>
-#include <string>
+#include <cstdint>
 
-//Tipos de mensajes
 enum class MessageType {
     WRITE_MEM,
     READ_MEM,
@@ -24,113 +13,39 @@ enum class MessageType {
     WRITE_RESP
 };
 
-//Estructura para todos los mensajes
-struct MessageBase {
+struct Message {
     MessageType type;
-    uint8_t src;        //PE fuente (0x00-0x07)
-    uint8_t qos;        //Prioridad (0x00-0xFF)
-    uint64_t timestamp; //Tiempo de simulación
+    uint8_t src;        //PE source (0x00-0x07)
+    uint8_t dest;       //PE destination
+    uint32_t addr;      //Memory address
+    uint8_t qos;        //Priority (0x00-0xFF)
+    uint16_t size;      //Size in bytes (for READ_MEM)
+    uint8_t status;     //WRITE_RESP (0x1: OK, 0x0: NOT_OK)
+    uint8_t cache_line; //BROADCAST_INVALIDATE
+    std::vector<uint8_t> data; //Payload
 
-    virtual ~MessageBase() = default;
-    virtual std::string toString() const = 0;
-};
+    // Constructor for different message types
+    Message(MessageType t, uint8_t s, uint8_t q) : type(t), src(s), qos(q) {}
 
-//WRITE_MEM: Escribir en memoria
-struct WriteMemMessage : public MessageBase {
-    uint32_t addr;                  //mem address
-    uint8_t num_of_cache_lines;     //lineas de cache
-    uint32_t start_cache_line;      //primera linea de cache
-    std::vector<uint8_t> data;      //Datos
-
-    WriteMemMessage() {
-        type = MessageType::WRITE_MEM;
+    size_t getSize() const {
+        size_t base_size = sizeof(type) + sizeof(src) + sizeof(dest) + sizeof(qos);
+        switch(type) {
+            case MessageType::WRITE_MEM:
+                return base_size + sizeof(addr) + data.size();
+            case MessageType::READ_MEM:
+                return base_size + sizeof(addr) + sizeof(size);
+            case MessageType::BROADCAST_INVALIDATE:
+                return base_size + sizeof(cache_line);
+            case MessageType::INV_ACK:
+                return base_size + sizeof(cache_line);
+            case MessageType::INV_COMPLETE:
+                return base_size + sizeof(cache_line);
+            case MessageType::READ_RESP:
+                return base_size + sizeof(cache_line);
+            case MessageType::WRITE_RESP:
+                return base_size + sizeof(cache_line);
+            default:
+                return base_size;
+        }
     }
-
-    std::string toString() const override;
 };
-
-//READ_MEM: Leer de memoria
-struct ReadMemMessage : public MessageBase {
-    uint32_t addr;
-    uint16_t size;
-
-    ReadMemMessage() {
-        type = MessageType::READ_MEM;
-    }
-
-    std::string toString() const override;
-};
-
-//BROADCAST_INVALIDATE: Invalidar caché
-struct BroadcastInvalidateMessage : public MessageBase {
-    uint32_t src_cache_line; //Línea del caché a invalidar
-
-    BroadcastInvalidateMessage() {
-        type = MessageType::BROADCAST_INVALIDATE;
-    }
-
-    std::string toString() const override;
-};
-
-//INV_ACK: Acknowledgement del invalidate
-struct InvAckMessage : public MessageBase {
-    InvAckMessage() {
-        type = MessageType::INV_ACK;
-    }
-
-    std::string toString() const override;
-};
-
-//INV_COMPLETE: Invalidación completada
-struct InvCompleteMessage : public MessageBase {
-    uint8_t dest; //PE destino (quien generó el BROADCAST_INVALIDATE)
-
-    InvCompleteMessage() {
-        type = MessageType::INV_COMPLETE;
-    }
-
-    std::string toString() const override;
-};
-
-//READ_RESP: Leer respuesta
-struct ReadRespMessage : public MessageBase {
-    uint8_t dest;               //PE destino
-    std::vector<uint8_t> data;  //Datos a leer
-
-    ReadRespMessage() {
-        type = MessageType::READ_RESP;
-    }
-
-    std::string toString() const override;
-};
-
-//WRITE_RESP: Escribir respuesta
-struct WriteRespMessage : public MessageBase {
-    uint8_t dest;       //PE destino
-    uint8_t status;     //0x1: OK, 0x0: Not_OK
-
-    WriteRespMessage() {
-        type = MessageType::WRITE_RESP;
-    }
-
-    std::string toString() const override;
-};
-
-//Tipo de variante que engloba todos los tipos de mensajes
-using Message = std::variant<
-    WriteMemMessage,
-    ReadMemMessage,
-    BroadcastInvalidateMessage,
-    InvAckMessage,
-    InvCompleteMessage,
-    ReadRespMessage,
-    WriteRespMessage
->;
-
-//Utils de mensaje
-MessageType getMessageType(const Message& msg);
-uint8_t getMessageSource(const Message& msg);
-uint8_t getMessageQoS(const Message& msg);
-std::string messageToString(const Message& msg);
-size_t calculateMessageSize(const Message& msg);
-#endif //MESSAGE_H

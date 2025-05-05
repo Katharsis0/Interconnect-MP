@@ -1,41 +1,46 @@
-//
-// Created by katharsis on 4/28/25.
-//
-
-#ifndef CACHE_H
-#define CACHE_H
-
-
-
 #pragma once
 
+#include <vector>
 #include <cstdint>
-#include <array>
-#include <optional>
-
-struct CacheLine {
-    bool valid = false;
-    bool dirty = false;
-    uint32_t tag = 0;
-    std::array<uint8_t, 16> data; // 16 bytes por línea de caché
-};
 
 class Cache {
-public:
-    static constexpr size_t NUM_LINES = 128; // 128 bloques como especificado
-
-    Cache();
-
-    std::optional<std::array<uint8_t, 16>> read(uint32_t address);
-    bool write(uint32_t address, const std::array<uint8_t, 16>& data);
-    void invalidate(uint32_t address);
-
 private:
-    std::array<CacheLine, NUM_LINES> lines_;
+    static constexpr size_t CACHE_SIZE = 128;
+    static constexpr size_t BLOCK_SIZE = 16;
 
-    uint32_t getTag(uint32_t address) const;
-    uint32_t getIndex(uint32_t address) const;
+    enum class CacheState {
+        MODIFIED,   //Modified
+        EXCLUSIVE,  //Exclusive clean
+        SHARED,     //Shared clean
+        INVALID     //Invalid
+    };
+
+    struct CacheLine {
+        CacheState state;
+        uint32_t tag;
+        std::vector<uint8_t> data;
+
+        CacheLine() : state(CacheState::INVALID), tag(0), data(BLOCK_SIZE, 0) {}
+    };
+
+    std::vector<CacheLine> lines;
+    uint8_t pe_id;
+public:
+    explicit Cache(uint8_t id) : pe_id(id), lines(CACHE_SIZE) {}
+    
+    //Check if address is in cache
+    bool contains(uint32_t addr) const;
+    
+    //Read data from cache
+    std::vector<uint8_t> read(uint32_t addr, size_t size);
+    
+    //Write data to cache
+    void write(uint32_t addr, const std::vector<uint8_t>& data);
+    
+    //Invalidate a cache line
+    void invalidate(uint8_t line);
+    
+    //Get cache line and tag from address
+    uint8_t getLineFromAddr(uint32_t addr) const;
+    uint8_t getTagFromAddr(uint32_t addr) const;
 };
-
-
-#endif //CACHE_H
