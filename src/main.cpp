@@ -41,7 +41,7 @@ int main() {
     std::vector<std::unique_ptr<PE>> pes;
 
     for (int i = 0; i < NUM_PES; ++i) {
-        auto pe = std::make_unique<PE>(i, 1, &interconnect, clock);
+        auto pe = std::make_unique<PE>(i, 1, clock);
 
         // Assign programs to different PEs
         if (i < 2) {
@@ -58,7 +58,7 @@ int main() {
         });
 
         // Register PE in Interconnect (for forwarding messages)
-        interconnect.register_pe(i, pe.get());
+        interconnect.register_cache(i, &pe->getCache());
 
         // Save the PE into the local pes vector so main can start, stop, check statistics...
         pes.push_back(std::move(pe));

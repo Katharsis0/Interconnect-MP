@@ -7,8 +7,8 @@ Interconnect::Interconnect(EventClock* clock)
     : clock_(clock) {}
 
 // Registers a PE into the interconnect
-void Interconnect::register_pe(uint8_t pe_id, PE* pe) {
-    pes_[pe_id] = pe; // pe pointer
+void Interconnect::register_cache(uint8_t cache_id, Cache* cache) {
+    caches_[cache_id] = cache; // pe pointer
 }
 
 // Called by a PE when they want to send a message
@@ -73,10 +73,12 @@ void Interconnect::process_next() {
             {
                 // Broadcast to all except source
                 // Cache invalidation: send to everyone except self
-                for (const auto& [pe_id, pe_ptr] : pes_)
+                for (const auto& [cache_id, cache_ptr] : caches_)
                 {
-                    if (pe_id == qm.src_pe) continue; // If it is the source iterate again for all others
-                    pe_ptr->receiveMessage(qm.msg);
+                    std::lock_guard<std::mutex> cout_lock(cout_mutex);
+                    std::cout << "[TEST] " << cache_ptr->getPE()->getPE_id() << "\n";
+                    if (1 == qm.src_pe) continue; // If it is the source iterate again for all others
+                    cache_ptr->receiveMessagePE(qm.msg);
                 }
                 break;
             }
@@ -89,8 +91,8 @@ void Interconnect::process_next() {
             {
                 uint8_t dest = getMessageDestination(qm.msg);
                 // Looks up destination PE
-                if (pes_.count(dest)) {
-                    pes_[dest]->receiveMessage(qm.msg); // If exists, destination receives message for aknowledgement
+                if (caches_.count(dest)) {
+                    caches_[dest]->receiveMessagePE(qm.msg); // If exists, destination receives message for aknowledgement
                 }
             }
             break;

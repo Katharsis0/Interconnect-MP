@@ -10,11 +10,13 @@
 #include "../Messages/Messages.h"
 
 // Forward declaration
-class PE;
+class Cache;
 
 class Interconnect {
 public:
-    Interconnect(EventClock* clock);
+    explicit Interconnect(EventClock* clock);
+
+    void register_cache(uint8_t cache_id, Cache* cache);
 
     // Called by PEs to send a message
     void send(uint8_t src_pe, const Message& msg);
@@ -22,8 +24,6 @@ public:
     // Called by EventClock when event happens
     void process_next();
 
-    // Register PE for forwarding messages
-    void register_pe(uint8_t pe_id, PE* pe);
 
 private:
 
@@ -38,7 +38,7 @@ private:
     std::mutex fifo_mutex_;
     EventClock* clock_;
 
-    std::unordered_map<uint8_t, PE*> pes_;
+    std::unordered_map<uint8_t, Cache*> caches_;
 
     // Helpers
     uint64_t getLatencyForMessage(const Message& msg);

@@ -6,9 +6,8 @@
 
 #include <iostream>
 
-PE::PE(uint8_t id, uint8_t qos, Interconnect* interconnect, EventClock& clock)
-    : id_(id), qos_(qos), interconnect_(interconnect), running_(false), clock_(clock),
-    instructionMemory_(), cache_(), mesiProtocol_(id){
+PE::PE(uint8_t id, uint8_t qos, EventClock& clock)
+    : id_(id), qos_(qos), running_(false), clock_(clock), cache_(this){
     // Inicializar estadísticas
     stats_ = Statistics{};
 }
@@ -48,22 +47,18 @@ void PE::run() {
         uint32_t addr = instr.getAddress(); // asumimos que tiene esta propiedad
 
         if (instr.isRead()) {
-            MESIState state = mesiProtocol_.handleRead(addr);
             std::lock_guard<std::mutex> cout_lock(cout_mutex);
-            std::cout << "PE " << static_cast<int>(id_) << " leyó dirección "
-                      << std::hex << addr << " en estado " << static_cast<int>(state) << "\n";
+            std::cout << "isRead" << "\n";
         } else if (instr.isWrite()) {
-            MESIState state = mesiProtocol_.handleWrite(addr);
             std::lock_guard<std::mutex> cout_lock(cout_mutex);
-            std::cout << "PE " << static_cast<int>(id_) << " escribió dirección "
-                      << std::hex << addr << " nuevo estado " << static_cast<int>(state) << "\n";
+            std::cout << "isWrite" << "\n";
         }
 
         stats_.instructionsExecuted++;
 
         Event doneEvent;
 
-        // Current tinme + latency
+        // Current time + latency
         doneEvent.timestamp = clock_.now() + 10; // Schedule this event to happen 10 logical time units after now
         doneEvent.pe_id = id_;
         doneEvent.action = "instruction_done";
@@ -82,7 +77,7 @@ void PE::run() {
 void PE::onEvent(const Event& event) {
     if (event.action == "instruction_done") {
         std::lock_guard<std::mutex> cout_lock(cout_mutex);
-        std::cout << "PE " << static_cast<int>(id_) << " reanudando ejecución\n";
+        std::cout << "PE " << static_cast<int>(id_) << " reanuda ejecución\n";
         std::unique_lock<std::mutex> lock(pe_mutex_);
         pe_cv_.notify_all();
     }
@@ -94,3 +89,10 @@ PE::Statistics PE::getStatistics() const {
     return stats_;
 }
 
+uint8_t PE::getPE_id() const {
+    return id_;
+}
+
+Cache& PE::getCache() {
+    return cache_;
+}

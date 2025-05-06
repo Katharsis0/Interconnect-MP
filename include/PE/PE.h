@@ -20,14 +20,14 @@
 #include "../Messages/Messages.h"
 #include "../PE/Cache.h"
 #include "../PE/InstructionMemory.h"
-#include "../MESI/MESIProtocol.h"
 
 
 class Interconnect; // Declaración anticipada
 
 class PE {
 public:
-    PE(uint8_t id, uint8_t qos, Interconnect* interconnect, EventClock& clock);
+    PE(uint8_t id, uint8_t qos, EventClock& clock);
+
     ~PE();
 
     void start();
@@ -48,6 +48,10 @@ public:
     };
 
     Statistics getStatistics() const;
+
+    uint8_t getPE_id() const;
+
+    Cache& getCache();
 
 
 private:
@@ -72,8 +76,6 @@ private:
     std::condition_variable messagesCV_;
 
     Statistics stats_;
-
-    MESIProtocol mesiProtocol_;  // Instancia de protocolo MESI
 };
 
 
