@@ -9,7 +9,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/tefa/Documents/GitHub/Interconnect-MP/src/MESI/MESIProtocol.cpp" "CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o" "gcc" "CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o.d"
+  "/home/tefa/Documents/GitHub/Interconnect-MP/src/Metrics/metrics.cpp" "CMakeFiles/Interconnect-MP.dir/src/Metrics/metrics.cpp.o" "gcc" "CMakeFiles/Interconnect-MP.dir/src/Metrics/metrics.cpp.o.d"
   "/home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp" "CMakeFiles/Interconnect-MP.dir/src/main.cpp.o" "gcc" "CMakeFiles/Interconnect-MP.dir/src/main.cpp.o.d"
+  "/home/tefa/Documents/GitHub/Interconnect-MP/src/server.cpp" "CMakeFiles/Interconnect-MP.dir/src/server.cpp.o" "gcc" "CMakeFiles/Interconnect-MP.dir/src/server.cpp.o.d"
   "" "Interconnect-MP" "gcc" "CMakeFiles/Interconnect-MP.dir/link.d"
   )
 

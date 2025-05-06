@@ -11,6 +11,10 @@ add_executable(Interconnect-MP
         src/MESI/MESIProtocol.cpp
         include/MESI/MESIState.h
         include/MESI/MESIProtocol.h
+        src/Metrics/metrics.cpp
+        include/Metrics/metrics.h
+        src/server.cpp
+        src/server.h
 )
 
 target_include_directories(Interconnect-MP PRIVATE include)

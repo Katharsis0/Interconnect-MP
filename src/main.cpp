@@ -1,22 +1,26 @@
-#include "MESI/MESIProtocol.h"
+#include "server.h"
 #include <iostream>
 
 int main() {
-    MESIProtocol proto(0);
-    uint32_t addr = 0xABC;
+    int serverSocket = createServerSocket();
+    bindSocket(serverSocket);
+    listenOnSocket(serverSocket);
 
-    std::cout << "Estado tras lectura: ";
-    auto state = proto.handleRead(addr);
-    std::cout << static_cast<int>(state) << "\n"; // Debería ser Exclusive (2)
-
-    std::cout << "Estado tras escritura: ";
-    state = proto.handleWrite(addr);
-    std::cout << static_cast<int>(state) << "\n"; // Debería ser Modified (3)
-
-    proto.invalidate(addr);
-    std::cout << "Estado tras invalidación: ";
-    state = proto.getState(addr);
-    std::cout << static_cast<int>(state) << "\n"; // Debería ser Invalid (0)
+    while (true) {
+        std::cout << "Esperando conexión de cliente..." << std::endl;
+        int clientSocket = acceptClient(serverSocket);
+        if (clientSocket >= 0) {
+            std::cout << "Cliente conectado.\n";
+            while (true) {
+                bool result = receiveMessage(clientSocket);
+                if (!result) {
+                    std::cout << "Cliente desconectado.\n";
+                    break;
+                }
+            }
+            closeSocket(clientSocket);
+        }
+    }
 
     return 0;
 }

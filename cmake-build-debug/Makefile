@@ -153,6 +153,30 @@ src/MESI/MESIProtocol.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.s
 .PHONY : src/MESI/MESIProtocol.cpp.s
 
+src/Metrics/metrics.o: src/Metrics/metrics.cpp.o
+.PHONY : src/Metrics/metrics.o
+
+# target to build an object file
+src/Metrics/metrics.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Metrics/metrics.cpp.o
+.PHONY : src/Metrics/metrics.cpp.o
+
+src/Metrics/metrics.i: src/Metrics/metrics.cpp.i
+.PHONY : src/Metrics/metrics.i
+
+# target to preprocess a source file
+src/Metrics/metrics.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Metrics/metrics.cpp.i
+.PHONY : src/Metrics/metrics.cpp.i
+
+src/Metrics/metrics.s: src/Metrics/metrics.cpp.s
+.PHONY : src/Metrics/metrics.s
+
+# target to generate assembly for a file
+src/Metrics/metrics.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Metrics/metrics.cpp.s
+.PHONY : src/Metrics/metrics.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -177,6 +201,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/server.o: src/server.cpp.o
+.PHONY : src/server.o
+
+# target to build an object file
+src/server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/server.cpp.o
+.PHONY : src/server.cpp.o
+
+src/server.i: src/server.cpp.i
+.PHONY : src/server.i
+
+# target to preprocess a source file
+src/server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/server.cpp.i
+.PHONY : src/server.cpp.i
+
+src/server.s: src/server.cpp.s
+.PHONY : src/server.s
+
+# target to generate assembly for a file
+src/server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/server.cpp.s
+.PHONY : src/server.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -189,9 +237,15 @@ help:
 	@echo "... src/MESI/MESIProtocol.o"
 	@echo "... src/MESI/MESIProtocol.i"
 	@echo "... src/MESI/MESIProtocol.s"
+	@echo "... src/Metrics/metrics.o"
+	@echo "... src/Metrics/metrics.i"
+	@echo "... src/Metrics/metrics.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/server.o"
+	@echo "... src/server.i"
+	@echo "... src/server.s"
 .PHONY : help
 
 

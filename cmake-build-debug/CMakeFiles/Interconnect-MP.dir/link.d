@@ -4,6 +4,8 @@ Interconnect-MP: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/crtbeginS.o \
   CMakeFiles/Interconnect-MP.dir/src/main.cpp.o \
   CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o \
+  CMakeFiles/Interconnect-MP.dir/src/Metrics/metrics.cpp.o \
+  CMakeFiles/Interconnect-MP.dir/src/server.cpp.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/../../../../lib/libstdc++.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/../../../../lib/libm.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/../../../../lib/libm.so \
@@ -41,6 +43,10 @@ Interconnect-MP: \
 CMakeFiles/Interconnect-MP.dir/src/main.cpp.o:
 
 CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o:
+
+CMakeFiles/Interconnect-MP.dir/src/Metrics/metrics.cpp.o:
+
+CMakeFiles/Interconnect-MP.dir/src/server.cpp.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/../../../../lib/libstdc++.so:
 
