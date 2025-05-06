@@ -2,20 +2,47 @@
 #define INTERCONNECT_H
 
 #pragma once
+
+#include <queue>
+#include <mutex>
+#include <unordered_map>
+#include "../Clock/EventClock.h"
 #include "../Messages/Messages.h"
-#include <cstdint>
-#include <iostream>
+
+// Forward declaration
+class PE;
 
 class Interconnect {
 public:
-    Interconnect() = default;
+    Interconnect(EventClock* clock);
 
-    void sendMessage(uint8_t source_id, uint8_t dest_id, const Message& message) {
-        std::cout << "Interconnect: mensaje de PE " << int(source_id)
-                  << " a PE " << int(dest_id) << " → tipo: " << int(getMessageType(message)) << "\n";
+    // Called by PEs to send a message
+    void send(uint8_t src_pe, const Message& msg);
 
-        std::cout << "Contenido: " << messageToString(message) << "\n";
-    }
+    // Called by EventClock when event happens
+    void process_next();
+
+    // Register PE for forwarding messages
+    void register_pe(uint8_t pe_id, PE* pe);
+
+private:
+
+    // Simulation control (scheduling, source, message)
+    struct QueuedMessage {
+        Message msg; // Original Message (ReadMem, WriteResp...)
+        uint8_t src_pe; // Sender
+        uint64_t scheduled_time; // EventClock timestamp
+    };
+
+    std::queue<QueuedMessage> fifo_;
+    std::mutex fifo_mutex_;
+    EventClock* clock_;
+
+    std::unordered_map<uint8_t, PE*> pes_;
+
+    // Helpers
+    uint64_t getLatencyForMessage(const Message& msg);
+    uint8_t getMessageDestination(const Message& msg);
 };
 
-#endif //INTERCONNECT_H
+#endif // INTERCONNECT_H
