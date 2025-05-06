@@ -2,21 +2,26 @@
 #include "../../include/Global/Global.h"
 #include <iostream>
 
+// For stepping
 EventClock::EventClock(ClockMode mode)
     : mode_(mode) {}
+
 
 void EventClock::add_event(const Event& e) {
     {
         std::lock_guard<std::mutex> lock(mutex_);
         event_queue.push(e);
     }
-    cv_.notify_one();
+    cv_.notify_all();
 }
 
+// Listens for events, processes them and notifies PEs
 void EventClock::run() {
     while (running_) {
         std::unique_lock<std::mutex> lock(mutex_);
-        cv_.wait(lock, [this]() { return !event_queue.empty() || !running_; });
+
+        // If there are any events or running == false (stop)
+        cv_.wait(lock, [this]() { return !event_queue.empty() || !running_; }); 
 
         if (!running_) break;
 
@@ -32,6 +37,7 @@ void EventClock::run() {
                       << " en PE " << e.pe_id << "\n";
         }
 
+        // If a PE with pe_id exists, calls onEvent()
         if (handlers_.count(e.pe_id)) {
             handlers_[e.pe_id](e);
         }
@@ -83,6 +89,7 @@ void EventClock::set_total_pes(int n) {
     total_pes = n;
 }
 
+// PE calls this function when it finished all its instructions
 void EventClock::notify_pe_finished(int pe_id) {
     std::lock_guard<std::mutex> lock(finish_mutex_);
     pes_finished++;
@@ -96,9 +103,12 @@ void EventClock::notify_pe_finished(int pe_id) {
     finish_cv_.notify_all();
 }
 
+// Blocks main thread until EventClock sees that ALL PEs finished 
 void EventClock::wait_until_all_pes_finished() {
     std::unique_lock<std::mutex> lock(finish_mutex_);
     finish_cv_.wait(lock, [this]() {
         return pes_finished >= total_pes;
     });
 }
+
+

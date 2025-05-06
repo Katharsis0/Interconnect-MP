@@ -63,20 +63,23 @@ int main() {
             pe->loadInstructions(program3); // PE 5, PE 6, PE 7
         }
 
+        //  When EventClock has event for PE i, call pe_ptr->onEvent(event)
         clock.register_pe(i, [pe_ptr = pe.get()](const Event& e) {
-            pe_ptr->onEvent(e);
+            pe_ptr->onEvent(e); // Allows EventClock to notify PE
         });
 
         pes.push_back(std::move(pe));
     }
 
+    // Start all PEs
     for (auto& pe : pes) {
         pe->start();
     }
 
+    // Start EventClock in a thread
     std::thread clock_thread(&EventClock::run, &clock);
 
-    // Esperar hasta que todos los PEs terminen
+
     clock.wait_until_all_pes_finished();
 
     clock.stop();

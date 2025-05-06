@@ -62,7 +62,9 @@ void PE::run() {
         stats_.instructionsExecuted++;
 
         Event doneEvent;
-        doneEvent.timestamp = clock_.now() + 10;
+
+        // Current tinme + latency
+        doneEvent.timestamp = clock_.now() + 10; // Schedule this event to happen 10 logical time units after now
         doneEvent.pe_id = id_;
         doneEvent.action = "instruction_done";
 
@@ -72,7 +74,7 @@ void PE::run() {
         pe_cv_.wait(lock);
     }
 
-    // Avisar que este PE terminó
+    // Notify the PE with id_ finished
     clock_.notify_pe_finished(id_);
 }
 
