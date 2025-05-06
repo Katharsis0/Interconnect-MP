@@ -29,6 +29,7 @@ struct MessageBase {
     MessageType type;
     uint8_t src;        //PE fuente (0x00-0x07)
     uint8_t qos;        //Prioridad (0x00-0xFF)
+    uint32_t addr;
     uint64_t timestamp; //Tiempo de simulación
 
     virtual ~MessageBase() = default;
@@ -36,7 +37,7 @@ struct MessageBase {
 };
 
 //WRITE_MEM: Escribir en memoria
-struct WriteMemMessage : public MessageBase {
+struct WriteMemMessage : MessageBase {
     uint32_t addr;                  //mem address
     uint8_t num_of_cache_lines;     //lineas de cache
     uint32_t start_cache_line;      //primera linea de cache

@@ -18,7 +18,7 @@ Instruction InstructionMemory::getNext() {
     }
 
     // Si no hay instrucciones, devolver dummy para evitar error
-    return Instruction(InstructionType::READ, 0x0);
+    return {InstructionType::READ_MEM, 0x0};
 }
 
 void InstructionMemory::reset() {

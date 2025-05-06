@@ -6,9 +6,9 @@
 
 #include <iostream>
 
-PE::PE(uint8_t id, uint8_t qos, Interconnect* interconnect, EventClock& clock)
-    : id_(id), qos_(qos), interconnect_(interconnect), running_(false), clock_(clock),
-    instructionMemory_(), cache_(), mesiProtocol_(id){
+PE::PE(uint8_t id, uint8_t qos,  EventClock& clock)
+    : id_(id), qos_(qos), running_(false), clock_(clock),
+    instructionMemory_(), cache_(id), mesiProtocol_(id){
     // Inicializar estadísticas
     stats_ = Statistics{};
 }
@@ -47,12 +47,12 @@ void PE::run() {
         Instruction instr = instructionMemory_.getNext();
         uint32_t addr = instr.getAddress(); // asumimos que tiene esta propiedad
 
-        if (instr.isRead()) {
+        if (instr.isReadMem()) {
             MESIState state = mesiProtocol_.handleRead(addr);
             std::lock_guard<std::mutex> cout_lock(cout_mutex);
             std::cout << "PE " << static_cast<int>(id_) << " leyó dirección "
                       << std::hex << addr << " en estado " << static_cast<int>(state) << "\n";
-        } else if (instr.isWrite()) {
+        } else if (instr.isWriteMem()) {
             MESIState state = mesiProtocol_.handleWrite(addr);
             std::lock_guard<std::mutex> cout_lock(cout_mutex);
             std::cout << "PE " << static_cast<int>(id_) << " escribió dirección "

@@ -18,22 +18,22 @@
 #include <mutex>
 #include <condition_variable>
 #include "../Messages/Messages.h"
-#include "../PE/Cache.h"
+#include "../Cache/Cache.h"
 #include "../PE/InstructionMemory.h"
 #include "../MESI/MESIProtocol.h"
 
 
-class Interconnect; // Declaración anticipada
+class Interconnect; //Declaración anticipada
 
 class PE {
 public:
-    PE(uint8_t id, uint8_t qos, Interconnect* interconnect, EventClock& clock);
+    PE(uint8_t id, uint8_t qos, EventClock& clock);
     ~PE();
-
+    bool completed_ = false;
     void start();
     void stop();
     void loadInstructions(const std::vector<Instruction>& instructions);
-
+    bool running_;
     // Métodos para recibir mensajes del Interconnect
     void receiveMessage(const Message& msg);
 
@@ -44,7 +44,6 @@ public:
     struct Statistics {
         uint64_t instructionsExecuted;
         uint64_t cyclesBusy;
-        // ... otras métricas
     };
 
     Statistics getStatistics() const;
@@ -57,7 +56,6 @@ private:
     uint8_t qos_;
     Interconnect* interconnect_;
     std::thread thread_;
-    bool running_;
 
     EventClock& clock_;
     std::mutex pe_mutex_;

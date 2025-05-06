@@ -23,7 +23,11 @@ endforeach()
 
 
 # Crear el ejecutable con todos los archivos encontrados
-add_executable(Interconnect-MP ${SOURCES})
+add_executable(Interconnect-MP ${SOURCES}
+        include/Cache/Cache.h
+        src/Cache/Cache.cpp
+        main.cpp
+        src/Messages/Messages.cpp)
 
 target_link_libraries(Interconnect-MP PRIVATE Threads::Threads)
 
