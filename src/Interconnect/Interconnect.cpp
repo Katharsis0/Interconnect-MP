@@ -8,11 +8,23 @@ Interconnect::Interconnect(EventClock* clock)
 
 // Registers a PE into the interconnect
 void Interconnect::register_cache(uint8_t cache_id, Cache* cache) {
-    caches_[cache_id] = cache; // pe pointer
+    caches_[cache_id] = cache; // cache pointer
 }
+
+//El interconnect recibe un request y realiza una acción en función del tipo de request
+//ReadMem: Un PE envia una solicitud para traer datos de memoria y escribirlos en cache
+// --> El interconnect responde READ_RESP como confirmación al caché del PE solicitante
+//WriteMem: Un PE envia un request para escribir a memoria lo que tiene en cache
+// --> El interconnect responde WRITE_RESP como confirmación al caché del PE solicitante
+//BroadcastInvalidate: Un PE solicitó invalidar una linea de cache, por lo que el Interconnect difunde al resto de PEs
+// --> El interconnect envía BROADCAST_INVALIDATE a todos los cachés registrados, Espera a que estos respondan INV_ACK cuando invalidan su linea de cache
+// --> El interconnect envía un INV_COMPLETE una vez recibidos todos los acknowledge al PE solicitante
+//
+
 
 void Interconnect::sendMessage(const Message& msg) {
     switch (getMessageType(msg)) {
+
         case MessageType::READ_MEM:
             //Simulate read from memory
 
@@ -98,9 +110,9 @@ void Interconnect::process_next() {
                 for (const auto& [cache_id, cache_ptr] : caches_)
                 {
                     std::lock_guard<std::mutex> cout_lock(cout_mutex);
-                    std::cout << "[TEST] " << cache_ptr->getPE()->getPE_id() << "\n";
+                    std::cout << "[TEST] " << cache_ptr->getPEOwner()->getPE_id() << "\n";
                     if (1 == qm.src_pe) continue; // If it is the source iterate again for all others
-                    cache_ptr->receiveMessagePE(qm.msg);
+                    cache_ptr->receiveMessage(qm.msg);
                 }
                 break;
             }
@@ -114,7 +126,7 @@ void Interconnect::process_next() {
                 uint8_t dest = getMessageDestination(qm.msg);
                 // Looks up destination PE
                 if (caches_.count(dest)) {
-                    caches_[dest]->receiveMessagePE(qm.msg); // If exists, destination receives message for aknowledgement
+                    caches_[dest]->receiveMessage(qm.msg); // If exists, destination receives message for aknowledgement
                 }
             }
             break;
