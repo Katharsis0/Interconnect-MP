@@ -35,7 +35,11 @@ void PE::loadInstructions(const std::vector<Instruction>& instructions) {
     instructionMemory_.load(instructions);
 }
 
-void PE::receiveMessageFromCache(const Message& msg) {
+//TODO: receiveMessageFromCache:
+//BROADCAST_INVALIDATE -> El caché invalida una linea de caché y responde una confirmación de INV_ACK
+//WRITE_RESP [DEST, STATUS, QoS] -> Respuesta a WRITE_MEM -> 0x0:Ok ^ 0x1:NOT_OK
+//READ_RESP [DEST, DATA, QoS] -> Datos de la Memoria principal correspondient es a READ_ME
+void PE::receiveMessageFromCache(const Message &msg) {
     std::lock_guard<std::mutex> lock(messagesMutex_);
     incomingMessages_.push(msg);
     messagesCV_.notify_one();
