@@ -9,7 +9,7 @@
 #include "../Clock/EventClock.h"
 #include "../Messages/Messages.h"
 
-// Forward declaration
+//Forward declaration
 class Cache;
 
 class Interconnect {
@@ -18,16 +18,22 @@ public:
 
     void register_cache(uint8_t cache_id, Cache* cache);
 
-    // Called by PEs to send a message
+    //Called by PEs to send a message
     void send(uint8_t src_pe, const Message& msg);
 
-    // Called by EventClock when event happens
+    //Called by EventClock when event happens
     void process_next();
+
+    //sendMessage to cache
+    void sendMessage(const Message& msg);
+
+    void receiveMessage(const Message& msg);
+
 
 
 private:
 
-    // Simulation control (scheduling, source, message)
+    //Simulation control (scheduling, source, message)
     struct QueuedMessage {
         Message msg; // Original Message (ReadMem, WriteResp...)
         uint8_t src_pe; // Sender

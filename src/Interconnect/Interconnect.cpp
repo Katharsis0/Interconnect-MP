@@ -11,6 +11,28 @@ void Interconnect::register_cache(uint8_t cache_id, Cache* cache) {
     caches_[cache_id] = cache; // pe pointer
 }
 
+void Interconnect::sendMessage(const Message& msg) {
+    switch (getMessageType(msg)) {
+        case MessageType::READ_MEM:
+            //Simulate read from memory
+
+            break;
+
+        case MessageType::WRITE_MEM:
+            //Write memory
+            break;
+
+        case MessageType::BROADCAST_INVALIDATE:
+            //Broadcast invalidate to all other caches
+            break;
+
+        default:
+            break;
+    }
+}
+
+
+
 // Called by a PE when they want to send a message
 void Interconnect::send(uint8_t src_pe, const Message& msg) {
     // Many PEs may send concurrently

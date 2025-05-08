@@ -35,16 +35,20 @@ void PE::loadInstructions(const std::vector<Instruction>& instructions) {
     instructionMemory_.load(instructions);
 }
 
-void PE::receiveMessage(const Message& msg) {
+void PE::receiveMessageFromCache(const Message& msg) {
     std::lock_guard<std::mutex> lock(messagesMutex_);
     incomingMessages_.push(msg);
     messagesCV_.notify_one();
 }
 
+void PE::sendMessageToCache(const Message& msg) {
+   cache_.receiveMessage(msg);
+}
+
 void PE::run() {
     while (running_ && instructionMemory_.hasNext()) {
         Instruction instr = instructionMemory_.getNext();
-        uint32_t addr = instr.getAddress(); // asumimos que tiene esta propiedad
+        uint32_t addr = instr.getAddress(); //asumimos que tiene esta propiedad
 
         if (instr.isRead()) {
             std::lock_guard<std::mutex> cout_lock(cout_mutex);

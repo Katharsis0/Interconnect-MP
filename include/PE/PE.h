@@ -35,16 +35,18 @@ public:
     void loadInstructions(const std::vector<Instruction>& instructions);
 
     // Métodos para recibir mensajes del Interconnect
-    void receiveMessage(const Message& msg);
+    void receiveMessageFromCache(const Message& msg);
 
 
     void onEvent(const Event& event);
+
+    void sendMessageToCache(const Message& msg);
+
 
     // Estadísticas
     struct Statistics {
         uint64_t instructionsExecuted;
         uint64_t cyclesBusy;
-        // ... otras métricas
     };
 
     Statistics getStatistics() const;
@@ -59,7 +61,6 @@ private:
 
     uint8_t id_;
     uint8_t qos_;
-    Interconnect* interconnect_;
     std::thread thread_;
     bool running_;
 
@@ -75,7 +76,7 @@ private:
     mutable std::mutex messagesMutex_;
     std::condition_variable messagesCV_;
 
-    Statistics stats_;
+    Statistics stats_{};
 };
 
 

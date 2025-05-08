@@ -129,6 +129,7 @@ using Message = std::variant<
 
 //Utils de mensaje
 MessageType getMessageType(const Message& msg);
+MessageType setMessageType(const Message& msg);
 uint8_t getMessageSource(const Message& msg);
 uint8_t getMessageQoS(const Message& msg);
 std::string messageToString(const Message& msg);
