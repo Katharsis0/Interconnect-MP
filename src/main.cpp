@@ -11,41 +11,46 @@
 #include <mutex>
 
 int main() {
-    std::cout << "=== Starting simulation with 1 PE ===" << std::endl;
+    constexpr int NUM_PES = 8;  // 🔁 Change this value to test 1 or more PEs
+    std::cout << "=== Starting simulation with " << NUM_PES << " PE(s) ===" << std::endl;
 
     EventClock clock;
     Interconnect interconnect;
     clock.set_interconnect(&interconnect);
-
-    constexpr int NUM_PES = 1;
     clock.set_total_pes(NUM_PES);
 
     std::vector<Instruction> program = {
-        Instruction(InstructionType::READ, 0x00000008, 4)  // leer 11223344
+        Instruction(InstructionType::READ, 0x00000008, 4)  // Each PE reads same address
     };
 
-    auto pe = std::make_unique<PE>(0, 1, clock);
-    pe->loadInstructions(program);
+    std::vector<std::unique_ptr<PE>> pes;
 
-    clock.register_pe(0, [pe_ptr = pe.get()](const Event& e) {
-        pe_ptr->onEvent(e);
-    });
+    for (int i = 0; i < NUM_PES; ++i) {
+        auto pe = std::make_unique<PE>(i, 1, clock);
+        pe->loadInstructions(program);
 
-    interconnect.register_cache(0, &pe->getCache());
+        clock.register_pe(i, [pe_ptr = pe.get()](const Event& e) {
+            pe_ptr->onEvent(e);
+        });
 
-    pe->start();
+        interconnect.register_cache(i, &pe->getCache());
+        pes.push_back(std::move(pe));
+    }
+
+    for (auto& pe : pes) pe->start();
 
     std::thread clock_thread(&EventClock::run, &clock);
     clock.wait_until_all_pes_finished();
-
     clock.stop();
     clock_thread.join();
 
-    pe->stop();
+    for (auto& pe : pes) pe->stop();
 
-    auto stats = pe->getStatistics();
-    std::lock_guard<std::mutex> cout_lock(cout_mutex);
-    std::cout << "PE 0: " << stats.instructionsExecuted << " instrucciones ejecutadas\n";
+    for (size_t i = 0; i < pes.size(); ++i) {
+        auto stats = pes[i]->getStatistics();
+        std::lock_guard<std::mutex> cout_lock(cout_mutex);
+        std::cout << "PE " << i << ": " << stats.instructionsExecuted << " instrucciones ejecutadas\n";
+    }
 
     return 0;
 }
