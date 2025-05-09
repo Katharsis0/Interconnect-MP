@@ -54,53 +54,70 @@ void PE::receiveMessageFromCache(const Message &msg) {
         for (int i = 0; i < CACHE_BLOCK_COUNT; ++i) {
             if (!cache.cache_lines_[i].valid) {
                 cache.cache_lines_[i].valid = true;
-                std::copy(data.begin(), data.end(), cache.cache_lines_[i].data.begin());
 
-                std::cout << "[PE " << static_cast<int>(id_) << "] wrote data to cache line " << i << "\n";
+                //Warning
+                if (data.size() > cache.cache_lines_[i].data.size()) {
+                    std::cerr << "[PE " << static_cast<int>(id_) << "] WARNING: READ_RESP size ("
+                              << data.size() << ") > cache line size ("
+                              << cache.cache_lines_[i].data.size() << ")" << std::endl;
+                }
+
+                size_t to_copy = std::min(data.size(), cache.cache_lines_[i].data.size());
+                std::copy(data.begin(), data.begin() + to_copy, cache.cache_lines_[i].data.begin());
+
+
+                std::cout << "[PE " << static_cast<int>(id_) << "] wrote "
+                          << to_copy << " bytes to cache line " << i << std::endl;
                 break;
             }
+
         }
     }
 
 }
 
 void PE::sendMessageToCache(const Message& msg) {
-   cache_.receiveMessage(msg);
+    std::cout << "[PE " << static_cast<int>(id_) << "] Sending message to cache: "
+              << messageToString(msg) << std::endl;
+    cache_.receiveMessage(msg);
 }
-
-
-
 
 void PE::run() {
     while (running_ && instructionMemory_.hasNext()) {
         Instruction instr = instructionMemory_.getNext();
 
-        if (instr.getType()== InstructionType::READ) {
-            std::cout << "La instruccion a ejecutar es READ";
+        std::cout << "[PE " << static_cast<int>(id_) << "] Executing instruction\n";
+
+        if (instr.getType() == InstructionType::READ) {
+            std::cout << "[PE " << static_cast<int>(id_) << "] La instruccion a ejecutar es READ\n";
             ReadMemMessage read;
-            read.src=id_;
-            read.addr=instr.getAddress();
-            read.size=instr.getSize();
-            read.qos=qos_;
+            read.src = id_;
+            read.addr = instr.getAddress();
+            read.size = instr.getSize();
+            read.qos = qos_;
+            read.type = MessageType::READ_MEM;
             sendMessageToCache(read);
 
-        } else if (instr.getType()== InstructionType::WRITE) {
+        } else if (instr.getType() == InstructionType::WRITE) {
+            std::cout << "[PE " << static_cast<int>(id_) << "] La instruccion a ejecutar es WRITE\n";
             WriteMemMessage write;
             //src, address, num of cache lines, start_cache_line, data, qos
-            write.src=id_;
-            write.addr= instr.getAddress();
+            write.src = id_;
+            write.addr = instr.getAddress();
             write.data = instr.getData();
-            write.num_of_cache_lines= instr.getNumLines();
-            write.start_cache_line= instr.getStartLine();
-            write.data= instr.getData();
-
+            write.num_of_cache_lines = instr.getNumLines();
+            write.start_cache_line = instr.getStartLine();
+            write.data = instr.getData();
+            write.type = MessageType::WRITE_MEM; // Ensure type is set correctly
 
             sendMessageToCache(write);
 
         } else if (instr.getType() == InstructionType::INVALIDATE) {
+            std::cout << "[PE " << static_cast<int>(id_) << "] La instruccion a ejecutar es INVALIDATE\n";
             BroadcastInvalidateMessage inv;
-            inv.src=id_;
-            inv.src_cache_line=instr.getCacheLine();
+            inv.src = id_;
+            inv.src_cache_line = instr.getCacheLine();
+            inv.type = MessageType::BROADCAST_INVALIDATE; // Ensure type is set correctly
             sendMessageToCache(inv);
         }
 

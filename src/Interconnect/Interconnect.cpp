@@ -3,11 +3,12 @@
 #include "../../include/Global/Global.h"
 #include <iostream>
 #include "../../include/RAM/FileMemory.h"
-#include <iomanip>
+#include <iomanip> //for debugging (prints)
 
 // Registers a PE into the interconnect
 void Interconnect::register_cache(uint8_t cache_id, Cache* cache) {
     caches_[cache_id] = cache; // cache pointer
+    cache->setInterconnect(this);
 }
 
 //El interconnect recibe un request y realiza una acción en función del tipo de request
@@ -20,7 +21,7 @@ void Interconnect::register_cache(uint8_t cache_id, Cache* cache) {
 // --> El interconnect envía un INV_COMPLETE una vez recibidos todos los acknowledge al PE solicitante
 //
 
-Interconnect::Interconnect() : memory("src/RAM/RAM.txt") {
+Interconnect::Interconnect() : memory("RAM/memory.mif") {
 }
 
 void Interconnect::sendMessage(const Message& msg) {
@@ -28,56 +29,60 @@ void Interconnect::sendMessage(const Message& msg) {
 }
 
 void Interconnect::receiveMessage(const Message &msg) {
-    MessageType msg_received=getMessageType(msg);
-    std::cout << "El interconnect recibió el mensaje: " << messageToString(msg) ;
-    switch (msg_received) {
+    std::cout << "El interconnect está recibiendo el mensaje: \n" ;
+    std::cout << messageToString(msg) ;
+    MessageType type = getMessageType(msg);
 
-        case MessageType::WRITE_MEM: {
-            getMessageSource(msg);
-            const auto& writeMsg = std::get<WriteMemMessage>(msg);
-
-            // Mostrar datos que se van a escribir
-            std::cout << "[WRITE_MEM] Addr: 0x" << std::hex << writeMsg.addr << " | Data:";
-            for (uint8_t byte : writeMsg.data) {
-                std::cout << " 0x" << std::setw(2) << std::setfill('0') << (int)byte;
-            }
-            std::cout << std::dec << std::endl;
-
-            // Escribir en memoria
-            memory.write(writeMsg.addr, writeMsg.data);
-
-            // Leer desde memoria
-            auto readData = memory.read(writeMsg.addr, writeMsg.data.size());
-
-            // Mostrar datos leídos
-            std::cout << "[READ_BACK] Addr: 0x" << std::hex << writeMsg.addr << " | Data:";
-            for (uint8_t byte : readData) {
-                std::cout << " 0x" << std::setw(2) << std::setfill('0') << (int)byte;
-            }
-            std::cout << std::dec << std::endl;
-        }
-
+    switch (type) {
         case MessageType::READ_MEM: {
             const auto& readMsg = std::get<ReadMemMessage>(msg);
-            auto data = memory.read(getMessageAddress(msg), getMessageSize(msg));
 
-            std::cout << "[READ_MEM] Addr: 0x" << std::hex << getMessageAddress(msg)
-                      << " | Size: " << std::dec << getMessageSize(msg) << std::endl;
+            // Make sure address is valid before accessing memory
+            std::cout << "[Interconnect] Attempting READ from 0x" << std::hex << readMsg.addr
+                      << " (" << std::dec << readMsg.size << " bytes)" << std::endl;
+
+            std::vector<uint8_t> data = memory.read(readMsg.addr, readMsg.size);
+
+            std::cout << "[Interconnect] READ from 0x" << std::hex << readMsg.addr
+                      << " (" << std::dec << readMsg.size << " bytes): ";
             for (uint8_t byte : data) {
-                std::cout << " 0x" << std::hex << std::setw(2)
-                          << std::setfill('0') << (int)byte;
+                std::cout << std::setw(2) << std::setfill('0') << std::hex << (int)byte << " ";
             }
             std::cout << std::dec << std::endl;
+
+            // Get source PE ID for response
+            uint8_t dest = readMsg.src;
+
+            // Check if destination is registered
+            if (caches_.find(dest) == caches_.end()) {
+                std::cerr << "[Interconnect] ERROR: Cache ID " << (int)dest << " not registered\n";
+                return;
+            }
+
+            // Create response message
+            ReadRespMessage resp;
+            resp.src = readMsg.src;  //PE source
+            resp.dest = dest;
+            resp.qos = readMsg.qos;
+            resp.data = data;
+            resp.type = MessageType::READ_RESP;  // Ensure type is set correctly
+
+            std::cout << "[Interconnect] Sending response: " << messageToString(resp) << std::endl;
+
+            // Send message to destination cache
+            caches_[dest]->receiveMessage(resp);
             break;
         }
+
         default:
+            std::cerr << "[Interconnect] Unsupported message type\n";
             break;
     }
-
 }
 
 
-// Called by a PE when they want to send a message
+
+// Called by a Cac when they want to send a message
 void Interconnect::send(uint8_t src_pe, const Message& msg) {
     // Many PEs may send concurrently
     std::lock_guard<std::mutex> lock(fifo_mutex_);
@@ -128,12 +133,15 @@ void Interconnect::process_next() {
     {
         case MessageType::WRITE_MEM:
 
-        case MessageType::READ_MEM:
+        case MessageType::READ_MEM: {
+            for (const auto& [cache_id, cache_ptr] : caches_)
             {
                 std::lock_guard<std::mutex> cout_lock(cout_mutex);
-                std::cout << "-> [Interconnect] Forward to Memory ***\n";
-                break;
+                std::cout << "[PE Owner] " << cache_ptr->getPEOwner()->getPE_id() << "\n";
+                cache_ptr->receiveMessage(qm.msg);
             }
+            break;
+        }
 
         case MessageType::BROADCAST_INVALIDATE:
             {
@@ -191,7 +199,7 @@ uint64_t Interconnect::getLatencyForMessage(const Message& msg) {
 }
 
 // Extracts dest field from InvCompleteMessage, ReadRespMessage, WriteRespMessage
-uint8_t Interconnect::getMessageDestination(const Message& msg) {
+uint8_t Interconnect::getMessageDestination(const Message &msg) {
     if (std::holds_alternative<InvCompleteMessage>(msg))
         return std::get<InvCompleteMessage>(msg).dest;
     if (std::holds_alternative<ReadRespMessage>(msg))

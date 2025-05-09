@@ -70,12 +70,29 @@ uint8_t getMessageSource(const Message& msg) {
 }
 
 uint32_t getMessageAddress(const Message& msg) {
-    return std::visit([](auto&& arg) -> uint32_t { return arg.addr; }, msg);
+    return std::visit([](auto&& arg) -> uint32_t {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, WriteMemMessage> || std::is_same_v<T, ReadMemMessage>) {
+            return arg.addr;
+        } else {
+            return 0;
+        }
+    }, msg);
 }
 
+
 size_t getMessageSize(const Message& msg) {
-    return std::visit([](auto&& arg) -> size_t { return arg.size; }, msg);
+    return std::visit([](auto&& arg) -> size_t {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, ReadMemMessage>) {
+            return arg.size;
+        } else if constexpr (std::is_same_v<T, WriteMemMessage> || std::is_same_v<T, ReadRespMessage>) {
+            return arg.data.size();
+        }
+        return 0;
+    }, msg);
 }
+
 
 std::string messageToString(const Message& msg) {
     return std::visit([](auto&& arg) -> std::string { return arg.toString(); }, msg);

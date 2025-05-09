@@ -1,0 +1,25 @@
+# ninja log v6
+12	3057	1746784721368457799	CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o	b234665d51e7b103
+2	10	1746785504113602759	/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs	74bbf37f86f96864
+16	2725	1746784526307950602	CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o	ed803c794a327ee0
+30	4072	1746778827252736956	CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o	463f0ef39263420
+4436	7110	1746778831658772664	CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o	8f62fdfbfce72743
+13	2352	1746784606182567597	CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o	8cdb50746ad0648a
+21	4752	1746778827243736883	CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o	1fd65eded0531f92
+22	4433	1746778827244736891	CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o	a1f05b3d3b146e71
+14	68	1746785504178847126	build.ninja	4a36a0a073825fb5
+29	1309	1746778827251736948	CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o	378e98d439576fb0
+24	799	1746778827246736907	CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o	ce21c07aa79eb7b3
+3058	3225	1746784724414481346	Interconnect-MP	fc40cbc49ddc80a7
+19	2215	1746782753122588990	CMakeFiles/Interconnect-MP.dir/src/main.cpp.o	1df01208034d2114
+2264	4561	1746778829486755062	CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o	68b608c5ddfc84a7
+1309	2264	1746778828532747330	CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o	990924bd1fa9395e
+10	75	1746785504178847126	build.ninja	4a36a0a073825fb5
+1	9	1746785504187603337	/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs	74bbf37f86f96864
+2	9	1746785650813747123	/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs	74bbf37f86f96864
+10	2968	1746785650822747193	CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o	a1f05b3d3b146e71
+13	3290	1746785650824747209	CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o	ed803c794a327ee0
+14	3566	1746785650826927067	CMakeFiles/Interconnect-MP.dir/src/main.cpp.o	1df01208034d2114
+14	3922	1746785650825747216	CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o	8cdb50746ad0648a
+11	4407	1746785650823801944	CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o	b234665d51e7b103
+4407	4627	1746785655218781465	Interconnect-MP	fc40cbc49ddc80a7

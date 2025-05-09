@@ -1,0 +1,3 @@
+/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/build/CMakeFiles/Interconnect-MP.dir
+/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/build/CMakeFiles/edit_cache.dir
+/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/build/CMakeFiles/rebuild_cache.dir

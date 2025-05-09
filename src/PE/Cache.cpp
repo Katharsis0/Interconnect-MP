@@ -40,24 +40,48 @@ bool Cache::invalidate(uint32_t address) {
     return false; //Line not found in cache
 }
 
+void Cache::setInterconnect(Interconnect* ic) {
+    interconnect_ = ic;
+}
 
 void Cache::receiveMessage(const Message& msg) {
-    if (getMessageType(msg) == MessageType::READ_MEM ||
-        getMessageType(msg) == MessageType::WRITE_MEM ||
-        getMessageType(msg) == MessageType::BROADCAST_INVALIDATE) {
-        std::cout << "Mensaje dirgido para el Interconnect" << std::endl;
-        //Notify interconnect
+    if (!owner_pe) {
+        std::cerr << "[Cache] ERROR: owner_pe is null!\n";
+        return;
+    }
+
+    // Debug output
+    std::cout << "[Cache] Received message: " << messageToString(msg) << std::endl;
+
+    MessageType msgType = getMessageType(msg);
+
+    if (msgType == MessageType::READ_MEM ||
+        msgType == MessageType::WRITE_MEM ||
+        msgType == MessageType::BROADCAST_INVALIDATE) {
+        std::cout << "[Cache] Mensaje dirigido para el Interconnect" << std::endl;
+
+        // Verify interconnect is initialized
+        if (!interconnect_) {
+            std::cerr << "[Cache] ERROR: interconnect_ is null! Make sure register_cache was called." << std::endl;
+            return;
+        }
+
+        // Forward message to interconnect
         interconnect_->receiveMessage(msg);
-    }
-    else if (getMessageType(msg)== MessageType::READ_RESP ||
-            getMessageType(msg) == MessageType::WRITE_RESP ||
-            getMessageType(msg)== MessageType::INV_ACK ||
-            getMessageType(msg) == MessageType::INV_COMPLETE) {
-        std::cout << "Mensaje dirigido para el OwnerPE" << std::endl;
-        //Notify owner PE
+        }
+    else if (msgType == MessageType::READ_RESP ||
+             msgType == MessageType::WRITE_RESP ||
+             msgType == MessageType::INV_ACK ||
+             msgType == MessageType::INV_COMPLETE) {
+        std::cout << "[Cache] Mensaje dirigido para el OwnerPE" << std::endl;
+
+        // Forward message to owner PE
         owner_pe->receiveMessageFromCache(msg);
-    }
+        } else {
+            std::cerr << "[Cache] ERROR: owner_pe is null when forwarding response!" << std::endl;
+        }
 }
+
 
 
 // Get tag from memory address
