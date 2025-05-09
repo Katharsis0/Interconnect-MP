@@ -11,8 +11,8 @@
 
 int main() {
     EventClock clock;
-    //Interconnect interconnect(&clock);
-    Interconnect interconnect;
+    Interconnect interconnect(&clock);
+    //Interconnect interconnect;
     // Tell EventClock who the Interconnect is
     clock.set_interconnect(&interconnect);
 
@@ -46,7 +46,8 @@ int main() {
     std::vector<std::unique_ptr<PE>> pes;
 
     for (int i = 0; i < NUM_PES; ++i) {
-        auto pe = std::make_unique<PE>(i, 1, clock);
+        auto pe = std::make_unique<PE>(i, 1, clock); // cache is constructed
+        pe->getCache().setInterconnect(&interconnect);
 
         // Assign programs to different PEs
         if (i < 2) {

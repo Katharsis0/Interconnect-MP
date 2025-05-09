@@ -15,7 +15,7 @@ class Cache;
 class Interconnect {
 
 public:
-    Interconnect();  // <--- ESTA LÍNEA ES NECESARIA
+    Interconnect(EventClock* clock);  // <--- ESTA LÍNEA ES NECESARIA
 
 //    explicit Interconnect(EventClock* clock);
 

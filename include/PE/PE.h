@@ -29,6 +29,7 @@ class Interconnect; // Declaración anticipada
 class PE {
 public:
     PE(uint8_t id, uint8_t qos, EventClock& clock);
+    void initialize();
 
     ~PE();
 

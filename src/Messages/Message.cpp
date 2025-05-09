@@ -107,4 +107,19 @@ size_t calculateMessageSize(const Message& msg) {
 
         return size;
     }, msg);
+
 }
+    std::string getMessageTypeString(const Message& msg) {
+        MessageType type = getMessageType(msg);
+
+        switch (type) {
+            case MessageType::WRITE_MEM:             return "WRITE_MEM";
+            case MessageType::READ_MEM:              return "READ_MEM";
+            case MessageType::BROADCAST_INVALIDATE:  return "BROADCAST_INVALIDATE";
+            case MessageType::INV_ACK:               return "INV_ACK";
+            case MessageType::INV_COMPLETE:          return "INV_COMPLETE";
+            case MessageType::READ_RESP:             return "READ_RESP";
+            case MessageType::WRITE_RESP:            return "WRITE_RESP";
+            default:                                 return "UNKNOWN";
+        }
+    }

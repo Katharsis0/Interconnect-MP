@@ -7,9 +7,13 @@
 #include <iostream>
 
 PE::PE(uint8_t id, uint8_t qos, EventClock& clock)
-    : id_(id), qos_(qos), running_(false), clock_(clock), cache_(this){
-    // Inicializar estadísticas
+: id_(id), qos_(qos), running_(false), clock_(clock), cache_() {
     stats_ = Statistics{};
+    cache_.setOwnerPE(this); // This line sets owner_pe_ safely
+}
+
+void PE::initialize() {
+    cache_.setOwnerPE(this);
 }
 
 PE::~PE() {
@@ -42,30 +46,70 @@ void PE::loadInstructions(const std::vector<Instruction>& instructions) {
 void PE::receiveMessageFromCache(const Message &msg) {
     std::lock_guard<std::mutex> lock(messagesMutex_);
     incomingMessages_.push(msg);
-    messagesCV_.notify_one();
+    messagesCV_.notify_all();
+
+    std::lock_guard<std::mutex> cout_lock(cout_mutex);
+    std::cout << "PE " << static_cast<int>(id_)
+              << " received message: " << messageToString(msg) << "\n";
+
+    // PE received message that signals completion of memory
+    if (std::holds_alternative<ReadRespMessage>(msg) || // True if msg is a ReadRespMessage
+        std::holds_alternative<WriteRespMessage>(msg)) // True if msg is a WriteRespMessage
+        {
+        Event doneEvent;
+        doneEvent.timestamp = clock_.now() + 10;
+        doneEvent.pe_id = id_;
+        doneEvent.action = "instruction_done";
+        clock_.add_event(doneEvent);
+        }
 }
 
 void PE::sendMessageToCache(const Message& msg) {
+
    cache_.receiveMessage(msg);
 }
-
-
-
 
 void PE::run() {
     while (running_ && instructionMemory_.hasNext()) {
         Instruction instr = instructionMemory_.getNext();
 
-        if (instr.getType()== InstructionType::READ) {
-            ReadMemMessage read;
+        {
+            std::lock_guard<std::mutex> lock(cout_mutex);
+            std::cout << "PE " << static_cast<int>(id_) << " fetched instruction at addr 0x"
+                      << std::hex << instr.getAddress() << "\n";
+        }
 
-            sendMessageToCache(read);
+        // Debug: print instruction type
+        InstructionType type = instr.getType();
+        std::string type_str = (type == InstructionType::READ) ? "READ" :
+                               (type == InstructionType::WRITE) ? "WRITE" :
+                               "INVALIDATE";
 
-        } else if (instr.getType()== InstructionType::WRITE) {
-            WriteMemMessage write;
+        {
+            std::lock_guard<std::mutex> lock(cout_mutex);
+            std::cout << "PE " << static_cast<int>(id_) << " executing instruction: " << type_str << "\n";
+        }
 
-            sendMessageToCache(write);
+        if (type == InstructionType::READ) {
+            ReadMemMessage msg;
+            msg.addr = instr.getAddress();
+            msg.src = id_;
+            msg.qos = qos_;
+            msg.timestamp = clock_.now();
 
+            sendMessageToCache(msg);
+        } else if (type == InstructionType::WRITE) {
+
+            WriteMemMessage msg;
+            msg.addr = instr.getAddress();
+            msg.src = id_;
+            msg.qos = qos_;
+            msg.timestamp = clock_.now();
+            msg.num_of_cache_lines = 1;
+            msg.start_cache_line = instr.getAddress();  // assuming same as addr
+            msg.data = {0x01, 0x02};  // dummy data
+
+            sendMessageToCache(msg);
         } else if (instr.getType() == InstructionType::INVALIDATE) {
             BroadcastInvalidateMessage inv;
             sendMessageToCache(inv);
@@ -73,15 +117,8 @@ void PE::run() {
 
         stats_.instructionsExecuted++;
 
-        Event doneEvent;
 
-        // Current time + latency
-        doneEvent.timestamp = clock_.now() + 10; // Schedule this event to happen 10 logical time units after now
-        doneEvent.pe_id = id_;
-        doneEvent.action = "instruction_done";
-
-        clock_.add_event(doneEvent);
-
+        // PE "pauses" until EventClock tells it to continue
         std::unique_lock<std::mutex> lock(pe_mutex_);
         pe_cv_.wait(lock);
     }

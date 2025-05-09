@@ -10,19 +10,34 @@
 #include <mutex>
 
 // Constructor
-Cache::Cache(PE* owner_pe)
-    : owner_pe(owner_pe), interconnect_(nullptr), reads_(0), writes_(0), invalidations_(0) {
-    // Initialize all cache lines
-    for (auto &line: cache_lines_) {
+Cache::Cache()
+    : owner_pe_(nullptr), interconnect_(nullptr),
+      reads_(0), writes_(0), invalidations_(0) {
+    for (auto& line : cache_lines_) {
         line.valid = false;
         line.tag = 0;
         line.data.fill(0);
     }
 }
 
-// Destructor
 Cache::~Cache() = default;
 
+void Cache::setOwnerPE(PE* pe) {
+    owner_pe_ = pe;
+    std::cout << "[Cache] owner_pe set to PE " << static_cast<int>(pe->getPE_id()) << "\n";
+}
+
+void Cache::setInterconnect(Interconnect* ic) {
+    interconnect_ = ic;
+    if (owner_pe_)
+        std::cout << "[Cache] Interconnect pointer set for PE " << static_cast<int>(owner_pe_->getPE_id()) << "\n";
+    else
+        std::cout << "[Cache] Interconnect pointer set for PE ??? (owner_pe is null!)\n";
+}
+
+PE* Cache::getPEOwner() const {
+    return owner_pe_;
+}
 // Read operation - return true if successful
 bool Cache::read(uint32_t address, uint8_t* data, uint16_t size) {
 
@@ -42,20 +57,22 @@ bool Cache::invalidate(uint32_t address) {
 
 
 void Cache::receiveMessage(const Message& msg) {
+
     if (getMessageType(msg) == MessageType::READ_MEM ||
         getMessageType(msg) == MessageType::WRITE_MEM ||
         getMessageType(msg) == MessageType::BROADCAST_INVALIDATE) {
         //Notify interconnect
-        interconnect_->receiveMessage(msg);
+        interconnect_->send(getPEOwner()->getPE_id(), msg);
     }
     else if (getMessageType(msg)== MessageType::READ_RESP ||
             getMessageType(msg) == MessageType::WRITE_RESP ||
             getMessageType(msg)== MessageType::INV_ACK ||
             getMessageType(msg) == MessageType::INV_COMPLETE) {
-        //Notify owner PE
-        owner_pe->receiveMessageFromCache(msg);
+        //Notify owner
+        owner_pe_->receiveMessageFromCache(msg);
     }
 }
+
 
 
 // Get tag from memory address
@@ -76,12 +93,6 @@ uint32_t Cache::getOffset(uint32_t address) const {
     return address % CACHE_LINE_SIZE;
 }
 
-
-
-// Get PE ID
-PE* Cache::getPEOwner() const {
-    return this->owner_pe;
-}
 
 // Convert address to cache block index
 uint32_t Cache::addressToBlockIndex(uint32_t address) const {

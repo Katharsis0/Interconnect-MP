@@ -20,8 +20,9 @@ void Interconnect::register_cache(uint8_t cache_id, Cache* cache) {
 // --> El interconnect envía un INV_COMPLETE una vez recibidos todos los acknowledge al PE solicitante
 //
 
-Interconnect::Interconnect() : memory("../RAM/RAM.txt") {
-}
+
+Interconnect::Interconnect(EventClock* clock)
+    : clock_(clock), memory("../RAM/RAM.txt") {}
 
 void Interconnect::sendMessage(const Message& msg) {
     switch (getMessageType(msg)) {
@@ -35,22 +36,27 @@ void Interconnect::sendMessage(const Message& msg) {
 }
 
 void Interconnect::receiveMessage(const Message &msg) {
-return;
+    std::lock_guard<std::mutex> cout_lock(cout_mutex);
+    std::cout << "Interconnect::receiveMessage     " << getMessageTypeString(msg) << "\n";
+    return;
 }
 
 
-// Called by a PE when they want to send a message
+// Called by a cache when they want to send a message
 void Interconnect::send(uint8_t src_pe, const Message& msg) {
+
     // Many PEs may send concurrently
     std::lock_guard<std::mutex> lock(fifo_mutex_);
-
     QueuedMessage qm;
     qm.msg = msg;
     qm.src_pe = src_pe;
 
     uint64_t latency = getLatencyForMessage(msg);
+
     qm.scheduled_time = clock_->now() + latency;
 
+    std::lock_guard<std::mutex> lock1(cout_mutex);
+    std::cout << "TEST IC send" << clock_->now() << "\n";
     // Adds queued messsage to end queue
     fifo_.push(qm);
 

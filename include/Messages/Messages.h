@@ -141,5 +141,6 @@ MessageType setMessageType(const Message& msg);
 uint8_t getMessageSource(const Message& msg);
 uint8_t getMessageQoS(const Message& msg);
 std::string messageToString(const Message& msg);
+std::string getMessageTypeString(const Message& msg);
 size_t calculateMessageSize(const Message& msg);
 #endif //MESSAGE_H
