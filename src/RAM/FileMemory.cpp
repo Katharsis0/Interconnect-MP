@@ -1,93 +1,77 @@
-#include "../include/RAM/FileMemory.h"
+#include "RAM/FileMemory.h"
 #include <fstream>
-#include <iostream>
-#include <iomanip>
 #include <sstream>
-#include <map>
+#include <iomanip>
+#include <iostream>
 
-FileMemory::FileMemory(const std::string& file) : filename(file) {
-    loadFromFile();
+FileMemory::FileMemory(const std::string& mif_path) : filename(mif_path) {
+    loadFromMIF();
 }
 
-void FileMemory::loadFromFile() {
+void FileMemory::loadFromMIF() {
     std::ifstream file(filename);
-    if (!file.is_open()) return;
-
-    std::string line;
-    while (std::getline(file, line)) {
-        std::stringstream ss(line);
-        std::string addr_str, value_str;
-
-        if (std::getline(ss, addr_str, ':') && std::getline(ss, value_str)) {
-            uint32_t addr = std::stoul(addr_str, nullptr, 16);
-            uint8_t value = std::stoul(value_str, nullptr, 16);
-            memory[addr] = value;
-        }
-    }
-}
-
-void FileMemory::writeToFile() {
-    std::ofstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "[RAM] ERROR: Cannot open file: " << filename << "\n";
+        std::cerr << "[FileMemory] ERROR: Cannot open MIF file: " << filename << std::endl;
         return;
     }
-    std::cout << "[DEBUG] Dumping memory contents:\n";
-    for (const auto& [addr, value] : memory) {
-        std::cout << "0x" << std::hex << std::setw(8) << std::setfill('0') << addr
-                  << ": " << std::hex << std::setw(2) << std::setfill('0') << (int)value << '\n';
-    }
-    for (const auto& [addr, value] : memory) {
-        file << "0x" << std::hex << std::setw(8) << std::setfill('0') << addr
-             << ": " << std::hex << std::setw(2) << std::setfill('0') << (int)value << '\n';
+    std::string line;
+    bool content_started = false;
+
+    while (std::getline(file, line)) {
+        if (line.find("CONTENT BEGIN") != std::string::npos) {
+            content_started = true;
+            continue;
+        }
+        if (line.find("END") != std::string::npos) break;
+        if (!content_started) continue;
+
+        std::stringstream ss(line);
+        std::string addr_str, colon, data_str;
+        ss >> addr_str >> colon >> data_str;
+        if (colon != ":") continue;
+
+        uint32_t addr = std::stoul(addr_str, nullptr, 16);
+        uint32_t data = std::stoul(data_str, nullptr, 16);
+        memory[addr] = data;
     }
 }
 
+void FileMemory::writeToMIF() {
+    std::ofstream file(filename);
+    file << "DEPTH = 4096;\nWIDTH = 32;\nADDRESS_RADIX = HEX;\nDATA_RADIX = HEX;\nCONTENT BEGIN\n";
 
-void FileMemory::write(uint32_t addr, const std::vector<uint8_t>& data) {
-    // writeToFile();
-
-    std::cout << "[DEBUG] FileMemory::write called. Addr: 0x"
-              << std::hex << addr << " | Data size: " << std::dec << data.size() << "\n";
-
-    if (data.empty()) {
-        std::cout << "[DEBUG] Warning: data vector is empty!\n";
+    for (uint32_t i = 0; i < 4096; ++i) {
+        uint32_t data = memory.count(i) ? memory[i] : 0;
+        file << std::uppercase << std::setfill('0') << std::hex
+             << std::setw(4) << i << " : "
+             << std::setw(8) << data << ";\n";
     }
 
-    std::cout << "[DEBUG] Data bytes: ";
-    for (uint8_t b : data) {
-        std::cout << std::hex << (int)b << " ";
-    }
-    std::cout << std::endl;
-
-
-
-    for (size_t i = 0; i < data.size(); ++i) {
-        memory[addr + i] = data[i];
-        std::cout << "[DEBUG] Writing byte at 0x" << std::hex << (addr + i)
-                 << " = " << std::setw(2) << std::setfill('0') << (int)data[i] << "\n";
-    }
-
-    writeToFile();
+    file << "END;\n";
 }
 
 std::vector<uint8_t> FileMemory::read(uint32_t addr, size_t size) {
-    std::lock_guard<std::mutex> lock(mem_mutex); // 🔐 mutex lock
-
-    std::vector<uint8_t> result(size, 0);
+    std::vector<uint8_t> result;
     for (size_t i = 0; i < size; ++i) {
-        uint32_t currAddr = addr + i;
-
-        if (memory.count(currAddr)) {
-            result[i] = memory[currAddr];
-            std::cout << "[DEBUG] Read byte at 0x" << std::hex << currAddr
-                      << " = 0x" << std::setw(2) << std::setfill('0') << (int)memory[currAddr] << "\n";
-        } else {
-            std::cout << "[DEBUG] Read byte at 0x" << std::hex << currAddr
-                      << " = NOT FOUND (default 0)\n";
-        }
+        uint32_t word_addr = (addr + i) / 4;
+        uint32_t offset = (addr + i) % 4;
+        uint32_t word = memory[word_addr];
+        uint8_t byte = (word >> ((3 - offset) * 8)) & 0xFF;
+        result.push_back(byte);
     }
     return result;
 }
 
+void FileMemory::write(uint32_t addr, const std::vector<uint8_t>& data) {
+    for (size_t i = 0; i < data.size(); ++i) {
+        uint32_t byte_addr = addr + i;
+        uint32_t word_addr = byte_addr / 4;
+        uint32_t offset = (byte_addr % 4);
+        uint32_t shift = (3 - offset) * 8;
+        uint32_t& word = memory[word_addr];
+        word &= ~(0xFF << shift);             // Clear the byte
+        word |= static_cast<uint32_t>(data[i]) << shift; // Set the byte
+    }
 
+    writeToMIF();
+}
