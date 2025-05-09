@@ -49,17 +49,26 @@ void PE::sendMessageToCache(const Message& msg) {
    cache_.receiveMessage(msg);
 }
 
+
+
+
 void PE::run() {
     while (running_ && instructionMemory_.hasNext()) {
         Instruction instr = instructionMemory_.getNext();
-        uint32_t addr = instr.getAddress(); //asumimos que tiene esta propiedad
 
-        if (instr.isRead()) {
-            std::lock_guard<std::mutex> cout_lock(cout_mutex);
-            std::cout << "isRead" << "\n";
-        } else if (instr.isWrite()) {
-            std::lock_guard<std::mutex> cout_lock(cout_mutex);
-            std::cout << "isWrite" << "\n";
+        if (instr.getType()== InstructionType::READ) {
+            ReadMemMessage read;
+
+            sendMessageToCache(read);
+
+        } else if (instr.getType()== InstructionType::WRITE) {
+            WriteMemMessage write;
+
+            sendMessageToCache(write);
+
+        } else if (instr.getType() == InstructionType::INVALIDATE) {
+            BroadcastInvalidateMessage inv;
+            sendMessageToCache(inv);
         }
 
         stats_.instructionsExecuted++;

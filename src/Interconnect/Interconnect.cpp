@@ -2,9 +2,8 @@
 #include "../../include/PE/PE.h"
 #include "../../include/Global/Global.h"
 #include <iostream>
+#include "../../include/RAM/FileMemory.h"
 
-Interconnect::Interconnect(EventClock* clock)
-    : clock_(clock) {}
 
 // Registers a PE into the interconnect
 void Interconnect::register_cache(uint8_t cache_id, Cache* cache) {
@@ -21,28 +20,23 @@ void Interconnect::register_cache(uint8_t cache_id, Cache* cache) {
 // --> El interconnect envía un INV_COMPLETE una vez recibidos todos los acknowledge al PE solicitante
 //
 
+Interconnect::Interconnect() : memory("../RAM/RAM.txt") {
+}
 
 void Interconnect::sendMessage(const Message& msg) {
     switch (getMessageType(msg)) {
 
-        case MessageType::READ_MEM:
-            //Simulate read from memory
-
-            break;
-
         case MessageType::WRITE_MEM:
-            //Write memory
+            const auto& writeMsg = std::get<WriteMemMessage>(msg);
+            memory.write(writeMsg.addr, writeMsg.data);
             break;
 
-        case MessageType::BROADCAST_INVALIDATE:
-            //Broadcast invalidate to all other caches
-            break;
-
-        default:
-            break;
     }
 }
 
+void Interconnect::receiveMessage(const Message &msg) {
+return;
+}
 
 
 // Called by a PE when they want to send a message

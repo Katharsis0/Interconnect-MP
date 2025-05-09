@@ -23,7 +23,11 @@ endforeach()
 
 
 # Crear el ejecutable con todos los archivos encontrados
-add_executable(Interconnect-MP ${SOURCES})
+add_executable(Interconnect-MP ${SOURCES}
+        #src/RAM/FileMemory.cpp
+        #include/RAM/memory.h
+        include/RAM/FileMemory.h
+        src/RAM/FileMemory.cpp)
 
 target_link_libraries(Interconnect-MP PRIVATE Threads::Threads)
 

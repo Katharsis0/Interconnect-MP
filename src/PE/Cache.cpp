@@ -3,6 +3,7 @@
 //
 
 #include "PE/Cache.h"
+#include "PE/PE.h"
 #include <iostream>
 #include <iomanip>
 #include <cassert>
@@ -79,7 +80,7 @@ uint32_t Cache::getOffset(uint32_t address) const {
 
 // Get PE ID
 PE* Cache::getPEOwner() const {
-    return this->owner_pe_;
+    return this->owner_pe;
 }
 
 // Convert address to cache block index
@@ -99,10 +100,3 @@ void Cache::printCacheContents() const {
     std::cout << std::dec; // Reset to decimal output
 }
 
-// Print cache statistics
-void Cache::printCacheStats() const {
-    std::cout << "Cache Statistics for PE " << static_cast<int>(pe_id_) << ":" << std::endl;
-    std::cout << "  Total Reads: " << reads_ << std::endl;
-    std::cout << "  Total Writes: " << writes_ << std::endl;
-    std::cout << "  Total Invalidations: " << invalidations_ << std::endl;
-}

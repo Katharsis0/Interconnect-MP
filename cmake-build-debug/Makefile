@@ -113,6 +113,7 @@ preinstall/fast:
 
 # clear depends
 depend:
+	$(CMAKE_COMMAND) -P /home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles/VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
@@ -128,6 +129,102 @@ Interconnect-MP: cmake_check_build_system
 Interconnect-MP/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/build
 .PHONY : Interconnect-MP/fast
+
+src/Clock/EventClock.o: src/Clock/EventClock.cpp.o
+.PHONY : src/Clock/EventClock.o
+
+# target to build an object file
+src/Clock/EventClock.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o
+.PHONY : src/Clock/EventClock.cpp.o
+
+src/Clock/EventClock.i: src/Clock/EventClock.cpp.i
+.PHONY : src/Clock/EventClock.i
+
+# target to preprocess a source file
+src/Clock/EventClock.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.i
+.PHONY : src/Clock/EventClock.cpp.i
+
+src/Clock/EventClock.s: src/Clock/EventClock.cpp.s
+.PHONY : src/Clock/EventClock.s
+
+# target to generate assembly for a file
+src/Clock/EventClock.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.s
+.PHONY : src/Clock/EventClock.cpp.s
+
+src/Clock/Scheduler.o: src/Clock/Scheduler.cpp.o
+.PHONY : src/Clock/Scheduler.o
+
+# target to build an object file
+src/Clock/Scheduler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o
+.PHONY : src/Clock/Scheduler.cpp.o
+
+src/Clock/Scheduler.i: src/Clock/Scheduler.cpp.i
+.PHONY : src/Clock/Scheduler.i
+
+# target to preprocess a source file
+src/Clock/Scheduler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.i
+.PHONY : src/Clock/Scheduler.cpp.i
+
+src/Clock/Scheduler.s: src/Clock/Scheduler.cpp.s
+.PHONY : src/Clock/Scheduler.s
+
+# target to generate assembly for a file
+src/Clock/Scheduler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.s
+.PHONY : src/Clock/Scheduler.cpp.s
+
+src/Global/Global.o: src/Global/Global.cpp.o
+.PHONY : src/Global/Global.o
+
+# target to build an object file
+src/Global/Global.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o
+.PHONY : src/Global/Global.cpp.o
+
+src/Global/Global.i: src/Global/Global.cpp.i
+.PHONY : src/Global/Global.i
+
+# target to preprocess a source file
+src/Global/Global.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.i
+.PHONY : src/Global/Global.cpp.i
+
+src/Global/Global.s: src/Global/Global.cpp.s
+.PHONY : src/Global/Global.s
+
+# target to generate assembly for a file
+src/Global/Global.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.s
+.PHONY : src/Global/Global.cpp.s
+
+src/Interconnect/Interconnect.o: src/Interconnect/Interconnect.cpp.o
+.PHONY : src/Interconnect/Interconnect.o
+
+# target to build an object file
+src/Interconnect/Interconnect.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o
+.PHONY : src/Interconnect/Interconnect.cpp.o
+
+src/Interconnect/Interconnect.i: src/Interconnect/Interconnect.cpp.i
+.PHONY : src/Interconnect/Interconnect.i
+
+# target to preprocess a source file
+src/Interconnect/Interconnect.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.i
+.PHONY : src/Interconnect/Interconnect.cpp.i
+
+src/Interconnect/Interconnect.s: src/Interconnect/Interconnect.cpp.s
+.PHONY : src/Interconnect/Interconnect.s
+
+# target to generate assembly for a file
+src/Interconnect/Interconnect.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.s
+.PHONY : src/Interconnect/Interconnect.cpp.s
 
 src/MESI/MESIProtocol.o: src/MESI/MESIProtocol.cpp.o
 .PHONY : src/MESI/MESIProtocol.o
@@ -152,6 +249,150 @@ src/MESI/MESIProtocol.s: src/MESI/MESIProtocol.cpp.s
 src/MESI/MESIProtocol.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.s
 .PHONY : src/MESI/MESIProtocol.cpp.s
+
+src/Messages/Message.o: src/Messages/Message.cpp.o
+.PHONY : src/Messages/Message.o
+
+# target to build an object file
+src/Messages/Message.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o
+.PHONY : src/Messages/Message.cpp.o
+
+src/Messages/Message.i: src/Messages/Message.cpp.i
+.PHONY : src/Messages/Message.i
+
+# target to preprocess a source file
+src/Messages/Message.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.i
+.PHONY : src/Messages/Message.cpp.i
+
+src/Messages/Message.s: src/Messages/Message.cpp.s
+.PHONY : src/Messages/Message.s
+
+# target to generate assembly for a file
+src/Messages/Message.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.s
+.PHONY : src/Messages/Message.cpp.s
+
+src/PE/Cache.o: src/PE/Cache.cpp.o
+.PHONY : src/PE/Cache.o
+
+# target to build an object file
+src/PE/Cache.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o
+.PHONY : src/PE/Cache.cpp.o
+
+src/PE/Cache.i: src/PE/Cache.cpp.i
+.PHONY : src/PE/Cache.i
+
+# target to preprocess a source file
+src/PE/Cache.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.i
+.PHONY : src/PE/Cache.cpp.i
+
+src/PE/Cache.s: src/PE/Cache.cpp.s
+.PHONY : src/PE/Cache.s
+
+# target to generate assembly for a file
+src/PE/Cache.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.s
+.PHONY : src/PE/Cache.cpp.s
+
+src/PE/Instruction.o: src/PE/Instruction.cpp.o
+.PHONY : src/PE/Instruction.o
+
+# target to build an object file
+src/PE/Instruction.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o
+.PHONY : src/PE/Instruction.cpp.o
+
+src/PE/Instruction.i: src/PE/Instruction.cpp.i
+.PHONY : src/PE/Instruction.i
+
+# target to preprocess a source file
+src/PE/Instruction.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.i
+.PHONY : src/PE/Instruction.cpp.i
+
+src/PE/Instruction.s: src/PE/Instruction.cpp.s
+.PHONY : src/PE/Instruction.s
+
+# target to generate assembly for a file
+src/PE/Instruction.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.s
+.PHONY : src/PE/Instruction.cpp.s
+
+src/PE/InstructionMemory.o: src/PE/InstructionMemory.cpp.o
+.PHONY : src/PE/InstructionMemory.o
+
+# target to build an object file
+src/PE/InstructionMemory.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o
+.PHONY : src/PE/InstructionMemory.cpp.o
+
+src/PE/InstructionMemory.i: src/PE/InstructionMemory.cpp.i
+.PHONY : src/PE/InstructionMemory.i
+
+# target to preprocess a source file
+src/PE/InstructionMemory.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.i
+.PHONY : src/PE/InstructionMemory.cpp.i
+
+src/PE/InstructionMemory.s: src/PE/InstructionMemory.cpp.s
+.PHONY : src/PE/InstructionMemory.s
+
+# target to generate assembly for a file
+src/PE/InstructionMemory.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.s
+.PHONY : src/PE/InstructionMemory.cpp.s
+
+src/PE/PE.o: src/PE/PE.cpp.o
+.PHONY : src/PE/PE.o
+
+# target to build an object file
+src/PE/PE.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o
+.PHONY : src/PE/PE.cpp.o
+
+src/PE/PE.i: src/PE/PE.cpp.i
+.PHONY : src/PE/PE.i
+
+# target to preprocess a source file
+src/PE/PE.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.i
+.PHONY : src/PE/PE.cpp.i
+
+src/PE/PE.s: src/PE/PE.cpp.s
+.PHONY : src/PE/PE.s
+
+# target to generate assembly for a file
+src/PE/PE.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.s
+.PHONY : src/PE/PE.cpp.s
+
+src/RAM/FileMemory.o: src/RAM/FileMemory.cpp.o
+.PHONY : src/RAM/FileMemory.o
+
+# target to build an object file
+src/RAM/FileMemory.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o
+.PHONY : src/RAM/FileMemory.cpp.o
+
+src/RAM/FileMemory.i: src/RAM/FileMemory.cpp.i
+.PHONY : src/RAM/FileMemory.i
+
+# target to preprocess a source file
+src/RAM/FileMemory.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.i
+.PHONY : src/RAM/FileMemory.cpp.i
+
+src/RAM/FileMemory.s: src/RAM/FileMemory.cpp.s
+.PHONY : src/RAM/FileMemory.s
+
+# target to generate assembly for a file
+src/RAM/FileMemory.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Interconnect-MP.dir/build.make CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.s
+.PHONY : src/RAM/FileMemory.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -186,9 +427,39 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Interconnect-MP"
+	@echo "... src/Clock/EventClock.o"
+	@echo "... src/Clock/EventClock.i"
+	@echo "... src/Clock/EventClock.s"
+	@echo "... src/Clock/Scheduler.o"
+	@echo "... src/Clock/Scheduler.i"
+	@echo "... src/Clock/Scheduler.s"
+	@echo "... src/Global/Global.o"
+	@echo "... src/Global/Global.i"
+	@echo "... src/Global/Global.s"
+	@echo "... src/Interconnect/Interconnect.o"
+	@echo "... src/Interconnect/Interconnect.i"
+	@echo "... src/Interconnect/Interconnect.s"
 	@echo "... src/MESI/MESIProtocol.o"
 	@echo "... src/MESI/MESIProtocol.i"
 	@echo "... src/MESI/MESIProtocol.s"
+	@echo "... src/Messages/Message.o"
+	@echo "... src/Messages/Message.i"
+	@echo "... src/Messages/Message.s"
+	@echo "... src/PE/Cache.o"
+	@echo "... src/PE/Cache.i"
+	@echo "... src/PE/Cache.s"
+	@echo "... src/PE/Instruction.o"
+	@echo "... src/PE/Instruction.i"
+	@echo "... src/PE/Instruction.s"
+	@echo "... src/PE/InstructionMemory.o"
+	@echo "... src/PE/InstructionMemory.i"
+	@echo "... src/PE/InstructionMemory.s"
+	@echo "... src/PE/PE.o"
+	@echo "... src/PE/PE.i"
+	@echo "... src/PE/PE.s"
+	@echo "... src/RAM/FileMemory.o"
+	@echo "... src/RAM/FileMemory.i"
+	@echo "... src/RAM/FileMemory.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
@@ -203,6 +474,7 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
+	$(CMAKE_COMMAND) -P /home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles/VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

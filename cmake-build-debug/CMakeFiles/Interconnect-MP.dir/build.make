@@ -72,24 +72,66 @@ include CMakeFiles/Interconnect-MP.dir/flags.make
 CMakeFiles/Interconnect-MP.dir/codegen:
 .PHONY : CMakeFiles/Interconnect-MP.dir/codegen
 
-CMakeFiles/Interconnect-MP.dir/src/main.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
-CMakeFiles/Interconnect-MP.dir/src/main.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp
-CMakeFiles/Interconnect-MP.dir/src/main.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/main.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/main.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/main.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp
+CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/EventClock.cpp
+CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/EventClock.cpp
 
-CMakeFiles/Interconnect-MP.dir/src/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp > CMakeFiles/Interconnect-MP.dir/src/main.cpp.i
+CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/EventClock.cpp > CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.i
 
-CMakeFiles/Interconnect-MP.dir/src/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp -o CMakeFiles/Interconnect-MP.dir/src/main.cpp.s
+CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/EventClock.cpp -o CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.s
+
+CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/Scheduler.cpp
+CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/Scheduler.cpp
+
+CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/Scheduler.cpp > CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.i
+
+CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/Scheduler.cpp -o CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.s
+
+CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/Global/Global.cpp
+CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/Global/Global.cpp
+
+CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/Global/Global.cpp > CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.i
+
+CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/Global/Global.cpp -o CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.s
+
+CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/Interconnect/Interconnect.cpp
+CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/Interconnect/Interconnect.cpp
+
+CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/Interconnect/Interconnect.cpp > CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.i
+
+CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/Interconnect/Interconnect.cpp -o CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.s
 
 CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
 CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/MESI/MESIProtocol.cpp
 CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/MESI/MESIProtocol.cpp
 
 CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.i: cmake_force
@@ -100,20 +142,138 @@ CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/MESI/MESIProtocol.cpp -o CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.s
 
+CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/Messages/Message.cpp
+CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/Messages/Message.cpp
+
+CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/Messages/Message.cpp > CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.i
+
+CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/Messages/Message.cpp -o CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.s
+
+CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Cache.cpp
+CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Cache.cpp
+
+CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Cache.cpp > CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.i
+
+CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Cache.cpp -o CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.s
+
+CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Instruction.cpp
+CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Instruction.cpp
+
+CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Instruction.cpp > CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.i
+
+CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Instruction.cpp -o CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.s
+
+CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/InstructionMemory.cpp
+CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/InstructionMemory.cpp
+
+CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/InstructionMemory.cpp > CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.i
+
+CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/InstructionMemory.cpp -o CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.s
+
+CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/PE.cpp
+CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/PE.cpp
+
+CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/PE.cpp > CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.i
+
+CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/PE.cpp -o CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.s
+
+CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/FileMemory.cpp
+CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/FileMemory.cpp
+
+CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/FileMemory.cpp > CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.i
+
+CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/FileMemory.cpp -o CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.s
+
+CMakeFiles/Interconnect-MP.dir/src/main.cpp.o: CMakeFiles/Interconnect-MP.dir/flags.make
+CMakeFiles/Interconnect-MP.dir/src/main.cpp.o: /home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp
+CMakeFiles/Interconnect-MP.dir/src/main.cpp.o: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/Interconnect-MP.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Interconnect-MP.dir/src/main.cpp.o -MF CMakeFiles/Interconnect-MP.dir/src/main.cpp.o.d -o CMakeFiles/Interconnect-MP.dir/src/main.cpp.o -c /home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp
+
+CMakeFiles/Interconnect-MP.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Interconnect-MP.dir/src/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp > CMakeFiles/Interconnect-MP.dir/src/main.cpp.i
+
+CMakeFiles/Interconnect-MP.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Interconnect-MP.dir/src/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp -o CMakeFiles/Interconnect-MP.dir/src/main.cpp.s
+
 # Object files for target Interconnect-MP
 Interconnect__MP_OBJECTS = \
-"CMakeFiles/Interconnect-MP.dir/src/main.cpp.o" \
-"CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o"
+"CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o" \
+"CMakeFiles/Interconnect-MP.dir/src/main.cpp.o"
 
 # External object files for target Interconnect-MP
 Interconnect__MP_EXTERNAL_OBJECTS =
 
-Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/main.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/Clock/EventClock.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/Clock/Scheduler.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/Global/Global.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/Interconnect/Interconnect.cpp.o
 Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/MESI/MESIProtocol.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/Messages/Message.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/PE/Cache.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/PE/Instruction.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/PE/InstructionMemory.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/PE/PE.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/RAM/FileMemory.cpp.o
+Interconnect-MP: CMakeFiles/Interconnect-MP.dir/src/main.cpp.o
 Interconnect-MP: CMakeFiles/Interconnect-MP.dir/build.make
 Interconnect-MP: CMakeFiles/Interconnect-MP.dir/compiler_depend.ts
 Interconnect-MP: CMakeFiles/Interconnect-MP.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Interconnect-MP"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable Interconnect-MP"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Interconnect-MP.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

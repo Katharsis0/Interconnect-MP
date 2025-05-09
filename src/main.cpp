@@ -11,30 +11,35 @@
 
 int main() {
     EventClock clock;
-    Interconnect interconnect(&clock);
-
+    //Interconnect interconnect(&clock);
+    Interconnect interconnect;
     // Tell EventClock who the Interconnect is
     clock.set_interconnect(&interconnect);
 
 
     constexpr int NUM_PES = 8;
     clock.set_total_pes(NUM_PES);
+    std::vector<Instruction> program = {
+        //Instruction(InstructionType::READ, 0x1000, 32, 10, 0, {}),
+        Instruction(InstructionType::WRITE, 0x2000, 0, 2, 0x2000, {0xDE, 0xAD, 0xBE, 0xEF}),
+        //Instruction(InstructionType::INVALIDATE, 0x3000)
+    };
 
     std::vector<Instruction> program1 = {
-        Instruction(InstructionType::READ,  0x1000),
+        //Instruction(InstructionType::READ,  0x1000),
         Instruction(InstructionType::WRITE, 0x1100),
-        Instruction(InstructionType::READ,  0x1200)
+        //Instruction(InstructionType::READ,  0x1200)
     };
 
     std::vector<Instruction> program2 = {
         Instruction(InstructionType::WRITE, 0x2000),
-        Instruction(InstructionType::READ,  0x2100)
+        //Instruction(InstructionType::READ,  0x2100)
     };
 
     std::vector<Instruction> program3 = {
-        Instruction(InstructionType::READ,  0x3000),
+        //Instruction(InstructionType::READ,  0x3000),
         Instruction(InstructionType::WRITE, 0x3100),
-        Instruction(InstructionType::READ,  0x3200),
+        //Instruction(InstructionType::READ,  0x3200),
         Instruction(InstructionType::WRITE, 0x3300)
     };
 
@@ -45,11 +50,11 @@ int main() {
 
         // Assign programs to different PEs
         if (i < 2) {
-            pe->loadInstructions(program1);
+            pe->loadInstructions(program);
         } else if (i < 5) {
-            pe->loadInstructions(program2);
+            pe->loadInstructions(program);
         } else {
-            pe->loadInstructions(program3);
+            pe->loadInstructions(program);
         }
 
         // Register PE in EventClock (for instruction_done, interconnect_process...)

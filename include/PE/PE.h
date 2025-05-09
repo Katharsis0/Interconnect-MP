@@ -17,9 +17,11 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-#include "../Messages/Messages.h"
-#include "../PE/Cache.h"
-#include "../PE/InstructionMemory.h"
+
+#include "Cache.h"
+#include "Cache.h"
+#include "Messages/Messages.h"
+#include "PE/InstructionMemory.h"
 
 
 class Interconnect; // Declaración anticipada

@@ -8,13 +8,16 @@
 #include <unordered_map>
 #include "../Clock/EventClock.h"
 #include "../Messages/Messages.h"
-
+#include "../RAM/FileMemory.h"
 //Forward declaration
 class Cache;
 
 class Interconnect {
+
 public:
-    explicit Interconnect(EventClock* clock);
+    Interconnect();  // <--- ESTA LÍNEA ES NECESARIA
+
+//    explicit Interconnect(EventClock* clock);
 
     void register_cache(uint8_t cache_id, Cache* cache);
 
@@ -34,6 +37,7 @@ public:
 private:
 
     //Simulation control (scheduling, source, message)
+    FileMemory memory;
     struct QueuedMessage {
         Message msg; // Original Message (ReadMem, WriteResp...)
         uint8_t src_pe; // Sender

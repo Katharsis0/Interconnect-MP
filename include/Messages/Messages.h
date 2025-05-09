@@ -36,6 +36,7 @@ struct MessageBase {
 };
 
 //WRITE_MEM: Escribir en memoria
+//PARAMETROS: SRC, ADDR, NUM_OF_CACHE_LINES, START_CACHE_LINE, QoS
 struct WriteMemMessage : public MessageBase {
     uint32_t addr;                  //mem address
     uint8_t num_of_cache_lines;     //lineas de cache
@@ -50,6 +51,7 @@ struct WriteMemMessage : public MessageBase {
 };
 
 //READ_MEM: Leer de memoria
+//PARAMETROS:SRC, ADDR, SIZE, QoS
 struct ReadMemMessage : public MessageBase {
     uint32_t addr;
     uint16_t size;
@@ -62,6 +64,8 @@ struct ReadMemMessage : public MessageBase {
 };
 
 //BROADCAST_INVALIDATE: Invalidar caché
+//PARAMETROS: SRC, CACHE_LINE, QoS
+
 struct BroadcastInvalidateMessage : public MessageBase {
     uint32_t src_cache_line; //Línea del caché a invalidar
 
@@ -73,6 +77,7 @@ struct BroadcastInvalidateMessage : public MessageBase {
 };
 
 //INV_ACK: Acknowledgement del invalidate
+//PARAMETROS SRC, QoS
 struct InvAckMessage : public MessageBase {
     InvAckMessage() {
         type = MessageType::INV_ACK;
@@ -82,6 +87,7 @@ struct InvAckMessage : public MessageBase {
 };
 
 //INV_COMPLETE: Invalidación completada
+//PARAMETROS: DEST, QoS
 struct InvCompleteMessage : public MessageBase {
     uint8_t dest; //PE destino (quien generó el BROADCAST_INVALIDATE)
 
@@ -93,6 +99,7 @@ struct InvCompleteMessage : public MessageBase {
 };
 
 //READ_RESP: Leer respuesta
+//PARAMETROS: DEST, DATA, QoS
 struct ReadRespMessage : public MessageBase {
     uint8_t dest;               //PE destino
     std::vector<uint8_t> data;  //Datos a leer
@@ -105,6 +112,7 @@ struct ReadRespMessage : public MessageBase {
 };
 
 //WRITE_RESP: Escribir respuesta
+//PARAMETROS: DEST, STATUS, QoS
 struct WriteRespMessage : public MessageBase {
     uint8_t dest;       //PE destino
     uint8_t status;     //0x1: OK, 0x0: Not_OK
