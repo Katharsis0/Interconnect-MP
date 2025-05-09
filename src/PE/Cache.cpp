@@ -45,6 +45,7 @@ void Cache::receiveMessage(const Message& msg) {
     if (getMessageType(msg) == MessageType::READ_MEM ||
         getMessageType(msg) == MessageType::WRITE_MEM ||
         getMessageType(msg) == MessageType::BROADCAST_INVALIDATE) {
+        std::cout << "Mensaje dirgido para el Interconnect" << std::endl;
         //Notify interconnect
         interconnect_->receiveMessage(msg);
     }
@@ -52,6 +53,7 @@ void Cache::receiveMessage(const Message& msg) {
             getMessageType(msg) == MessageType::WRITE_RESP ||
             getMessageType(msg)== MessageType::INV_ACK ||
             getMessageType(msg) == MessageType::INV_COMPLETE) {
+        std::cout << "Mensaje dirigido para el OwnerPE" << std::endl;
         //Notify owner PE
         owner_pe->receiveMessageFromCache(msg);
     }

@@ -40,9 +40,28 @@ void PE::loadInstructions(const std::vector<Instruction>& instructions) {
 //WRITE_RESP [DEST, STATUS, QoS] -> Respuesta a WRITE_MEM -> 0x0:Ok ^ 0x1:NOT_OK
 //READ_RESP [DEST, DATA, QoS] -> Datos de la Memoria principal correspondient es a READ_ME
 void PE::receiveMessageFromCache(const Message &msg) {
-    std::lock_guard<std::mutex> lock(messagesMutex_);
-    incomingMessages_.push(msg);
-    messagesCV_.notify_one();
+    if (getMessageType(msg) == MessageType::READ_RESP) {
+        const auto& resp = std::get<ReadRespMessage>(msg);
+        const std::vector<uint8_t>& data = resp.data;
+
+        std::cout << "[PE " << static_cast<int>(id_) << "] received READ_RESP with "
+                  << data.size() << " bytes.\n";
+
+        //Get the cache
+        Cache& cache = getCache();
+
+        //Find next available line (debe ser invalid)
+        for (int i = 0; i < CACHE_BLOCK_COUNT; ++i) {
+            if (!cache.cache_lines_[i].valid) {
+                cache.cache_lines_[i].valid = true;
+                std::copy(data.begin(), data.end(), cache.cache_lines_[i].data.begin());
+
+                std::cout << "[PE " << static_cast<int>(id_) << "] wrote data to cache line " << i << "\n";
+                break;
+            }
+        }
+    }
+
 }
 
 void PE::sendMessageToCache(const Message& msg) {
@@ -57,17 +76,31 @@ void PE::run() {
         Instruction instr = instructionMemory_.getNext();
 
         if (instr.getType()== InstructionType::READ) {
+            std::cout << "La instruccion a ejecutar es READ";
             ReadMemMessage read;
-
+            read.src=id_;
+            read.addr=instr.getAddress();
+            read.size=instr.getSize();
+            read.qos=qos_;
             sendMessageToCache(read);
 
         } else if (instr.getType()== InstructionType::WRITE) {
             WriteMemMessage write;
+            //src, address, num of cache lines, start_cache_line, data, qos
+            write.src=id_;
+            write.addr= instr.getAddress();
+            write.data = instr.getData();
+            write.num_of_cache_lines= instr.getNumLines();
+            write.start_cache_line= instr.getStartLine();
+            write.data= instr.getData();
+
 
             sendMessageToCache(write);
 
         } else if (instr.getType() == InstructionType::INVALIDATE) {
             BroadcastInvalidateMessage inv;
+            inv.src=id_;
+            inv.src_cache_line=instr.getCacheLine();
             sendMessageToCache(inv);
         }
 

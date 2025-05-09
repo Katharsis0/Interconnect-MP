@@ -5,14 +5,17 @@
 #include <vector>
 #include <cstdint>
 #include <map>
+#include <mutex>
 
 class FileMemory {
 private:
     std::string filename;
     std::map<uint32_t, uint8_t> memory;
+    std::mutex mem_mutex;
 
     void loadFromFile();
     void writeToFile();
+
 
 public:
     FileMemory(const std::string& file);

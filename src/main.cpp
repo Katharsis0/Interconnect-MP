@@ -20,8 +20,8 @@ int main() {
     constexpr int NUM_PES = 8;
     clock.set_total_pes(NUM_PES);
     std::vector<Instruction> program = {
-        //Instruction(InstructionType::READ, 0x1000, 32, 10, 0, {}),
-        Instruction(InstructionType::WRITE, 0x2000, 0, 2, 0x2000, {0xDE, 0xAD, 0xBE, 0xEF}),
+        Instruction(InstructionType::READ, 0x00001000, 4)
+        //Instruction(InstructionType::WRITE, 0x2000, 0, 2, 0x2000, {0xDE, 0xAD, 0xBE, 0xEF}),
         //Instruction(InstructionType::INVALIDATE, 0x3000)
     };
 

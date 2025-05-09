@@ -26,6 +26,8 @@ public:
             data.fill(0);
         }
     };
+    std::array<CacheLine, CACHE_BLOCK_COUNT> cache_lines_;
+
 
     // Constructor y destructor
     explicit Cache(PE* owner_pe);
@@ -57,7 +59,6 @@ public:
 private:
     PE* owner_pe; // PE propietario de esta caché
     Interconnect* interconnect_; // Interconector, debe asignarse con setInterconnect()
-    std::array<CacheLine, CACHE_BLOCK_COUNT> cache_lines_;
     std::mutex cache_mutex_; // Protección para concurrencia
 
     // Mensaje temporal (si se requiere)

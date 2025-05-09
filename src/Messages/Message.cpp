@@ -15,6 +15,7 @@ std::string WriteMemMessage::toString() const {
     return oss.str();
 }
 
+
 std::string ReadMemMessage::toString() const {
     std::ostringstream oss;
     oss << "READ_MEM [SRC:" << (int)src << " QoS:" << (int)qos
@@ -68,8 +69,12 @@ uint8_t getMessageSource(const Message& msg) {
     return std::visit([](auto&& arg) -> uint8_t { return arg.src; }, msg);
 }
 
-uint8_t getMessageQoS(const Message& msg) {
-    return std::visit([](auto&& arg) -> uint8_t { return arg.qos; }, msg);
+uint32_t getMessageAddress(const Message& msg) {
+    return std::visit([](auto&& arg) -> uint32_t { return arg.addr; }, msg);
+}
+
+size_t getMessageSize(const Message& msg) {
+    return std::visit([](auto&& arg) -> size_t { return arg.size; }, msg);
 }
 
 std::string messageToString(const Message& msg) {

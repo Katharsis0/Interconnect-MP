@@ -3,7 +3,7 @@
 #include "../../include/Global/Global.h"
 #include <iostream>
 #include "../../include/RAM/FileMemory.h"
-
+#include <iomanip>
 
 // Registers a PE into the interconnect
 void Interconnect::register_cache(uint8_t cache_id, Cache* cache) {
@@ -20,22 +20,60 @@ void Interconnect::register_cache(uint8_t cache_id, Cache* cache) {
 // --> El interconnect envía un INV_COMPLETE una vez recibidos todos los acknowledge al PE solicitante
 //
 
-Interconnect::Interconnect() : memory("../RAM/RAM.txt") {
+Interconnect::Interconnect() : memory("src/RAM/RAM.txt") {
 }
 
 void Interconnect::sendMessage(const Message& msg) {
-    switch (getMessageType(msg)) {
 
-        case MessageType::WRITE_MEM:
-            const auto& writeMsg = std::get<WriteMemMessage>(msg);
-            memory.write(writeMsg.addr, writeMsg.data);
-            break;
-
-    }
 }
 
 void Interconnect::receiveMessage(const Message &msg) {
-return;
+    MessageType msg_received=getMessageType(msg);
+    std::cout << "El interconnect recibió el mensaje: " << messageToString(msg) ;
+    switch (msg_received) {
+
+        case MessageType::WRITE_MEM: {
+            getMessageSource(msg);
+            const auto& writeMsg = std::get<WriteMemMessage>(msg);
+
+            // Mostrar datos que se van a escribir
+            std::cout << "[WRITE_MEM] Addr: 0x" << std::hex << writeMsg.addr << " | Data:";
+            for (uint8_t byte : writeMsg.data) {
+                std::cout << " 0x" << std::setw(2) << std::setfill('0') << (int)byte;
+            }
+            std::cout << std::dec << std::endl;
+
+            // Escribir en memoria
+            memory.write(writeMsg.addr, writeMsg.data);
+
+            // Leer desde memoria
+            auto readData = memory.read(writeMsg.addr, writeMsg.data.size());
+
+            // Mostrar datos leídos
+            std::cout << "[READ_BACK] Addr: 0x" << std::hex << writeMsg.addr << " | Data:";
+            for (uint8_t byte : readData) {
+                std::cout << " 0x" << std::setw(2) << std::setfill('0') << (int)byte;
+            }
+            std::cout << std::dec << std::endl;
+        }
+
+        case MessageType::READ_MEM: {
+            const auto& readMsg = std::get<ReadMemMessage>(msg);
+            auto data = memory.read(getMessageAddress(msg), getMessageSize(msg));
+
+            std::cout << "[READ_MEM] Addr: 0x" << std::hex << getMessageAddress(msg)
+                      << " | Size: " << std::dec << getMessageSize(msg) << std::endl;
+            for (uint8_t byte : data) {
+                std::cout << " 0x" << std::hex << std::setw(2)
+                          << std::setfill('0') << (int)byte;
+            }
+            std::cout << std::dec << std::endl;
+            break;
+        }
+        default:
+            break;
+    }
+
 }
 
 
