@@ -87,18 +87,13 @@ void Interconnect::send(uint8_t src_pe, const Message& msg) {
     // Many PEs may send concurrently
     std::lock_guard<std::mutex> lock(fifo_mutex_);
 
-    QueuedMessage qm;
-    qm.msg = msg;
-    qm.src_pe = src_pe;
-
     uint64_t latency = getLatencyForMessage(msg);
-    qm.scheduled_time = clock_->now() + latency;
 
     // Adds queued messsage to end queue
-    fifo_.push(qm);
+    fifo_.push(msg);
 
     Event ev;
-    ev.timestamp = qm.scheduled_time;
+    ev.timestamp = clock_->now() + latency;
     ev.pe_id = src_pe;
     ev.action = "interconnect_process";
 
@@ -112,7 +107,7 @@ void Interconnect::process_next() {
 
     if (fifo_.empty()) return;
 
-    QueuedMessage qm = fifo_.front();
+    Message msg = fifo_.front();
 
     // Removes the first element in queue fifo_
     fifo_.pop();
@@ -121,11 +116,11 @@ void Interconnect::process_next() {
         // Show when message is processed in simulation time
         std::lock_guard<std::mutex> cout_lock(cout_mutex);
         std::cout << "[Interconnect] Processed message from PE "
-                  << static_cast<int>(qm.src_pe) << " at time "
+                  << static_cast<int>(getMessageSource(msg)) << " at time "
                   << clock_->now() << "\n";
     }
 
-    MessageType type = getMessageType(qm.msg);
+    MessageType type = getMessageType(msg);
 
     // Should manage memory access
 
@@ -138,7 +133,7 @@ void Interconnect::process_next() {
             {
                 std::lock_guard<std::mutex> cout_lock(cout_mutex);
                 std::cout << "[PE Owner] " << cache_ptr->getPEOwner()->getPE_id() << "\n";
-                cache_ptr->receiveMessage(qm.msg);
+                cache_ptr->receiveMessage(msg);
             }
             break;
         }
@@ -151,8 +146,8 @@ void Interconnect::process_next() {
                 {
                     std::lock_guard<std::mutex> cout_lock(cout_mutex);
                     std::cout << "[TEST] " << cache_ptr->getPEOwner()->getPE_id() << "\n";
-                    if (1 == qm.src_pe) continue; // If it is the source iterate again for all others
-                    cache_ptr->receiveMessage(qm.msg);
+                    if (1 == getMessageSource(msg)) continue; // If it is the source iterate again for all others
+                    cache_ptr->receiveMessage(msg);
                 }
                 break;
             }
@@ -163,10 +158,10 @@ void Interconnect::process_next() {
         case MessageType::READ_RESP:
         case MessageType::WRITE_RESP:
             {
-                uint8_t dest = getMessageDestination(qm.msg);
+                uint8_t dest = getMessageDestination(msg);
                 // Looks up destination PE
                 if (caches_.count(dest)) {
-                    caches_[dest]->receiveMessage(qm.msg); // If exists, destination receives message for aknowledgement
+                    caches_[dest]->receiveMessage(msg); // If exists, destination receives message for aknowledgement
                 }
             }
             break;

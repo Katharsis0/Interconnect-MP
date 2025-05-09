@@ -74,6 +74,15 @@ void PE::receiveMessageFromCache(const Message &msg) {
         }
     }
 
+        Event doneEvent;
+
+        // Current time + latency
+        doneEvent.timestamp = clock_.now() + 10; // Schedule this event to happen 10 logical time units after now
+        doneEvent.pe_id = id_;
+        doneEvent.action = "instruction_done";
+
+        clock_.add_event(doneEvent);
+
 }
 
 void PE::sendMessageToCache(const Message& msg) {
@@ -86,67 +95,85 @@ void PE::run() {
     while (running_ && instructionMemory_.hasNext()) {
         Instruction instr = instructionMemory_.getNext();
 
-        std::cout << "[PE " << static_cast<int>(id_) << "] Executing instruction\n";
+        {
+            std::cout << "[PE " << static_cast<int>(id_) << "] Executing instruction\n";
+        }
 
-        if (instr.getType() == InstructionType::READ) {
-            std::cout << "[PE " << static_cast<int>(id_) << "] La instruccion a ejecutar es READ\n";
-            ReadMemMessage read;
-            read.src = id_;
-            read.addr = instr.getAddress();
-            read.size = instr.getSize();
-            read.qos = qos_;
-            read.type = MessageType::READ_MEM;
-            sendMessageToCache(read);
+        switch (instr.getType()) {
+            case InstructionType::READ: {
+                {
+                    std::cout << "[PE " << static_cast<int>(id_) << "] La instrucción a ejecutar es READ\n";
+                }
 
-        } else if (instr.getType() == InstructionType::WRITE) {
-            std::cout << "[PE " << static_cast<int>(id_) << "] La instruccion a ejecutar es WRITE\n";
-            WriteMemMessage write;
-            //src, address, num of cache lines, start_cache_line, data, qos
-            write.src = id_;
-            write.addr = instr.getAddress();
-            write.data = instr.getData();
-            write.num_of_cache_lines = instr.getNumLines();
-            write.start_cache_line = instr.getStartLine();
-            write.data = instr.getData();
-            write.type = MessageType::WRITE_MEM; // Ensure type is set correctly
+                ReadMemMessage read;
+                read.src = id_;
+                read.addr = instr.getAddress();
+                read.size = instr.getSize();
+                read.qos = qos_;
+                read.type = MessageType::READ_MEM;
+                sendMessageToCache(read);
+                break;
+            }
 
-            sendMessageToCache(write);
+            case InstructionType::WRITE: {
+                {
+                    std::cout << "[PE " << static_cast<int>(id_) << "] La instrucción a ejecutar es WRITE\n";
+                }
 
-        } else if (instr.getType() == InstructionType::INVALIDATE) {
-            std::cout << "[PE " << static_cast<int>(id_) << "] La instruccion a ejecutar es INVALIDATE\n";
-            BroadcastInvalidateMessage inv;
-            inv.src = id_;
-            inv.src_cache_line = instr.getCacheLine();
-            inv.type = MessageType::BROADCAST_INVALIDATE; // Ensure type is set correctly
-            sendMessageToCache(inv);
+                WriteMemMessage write;
+                write.src = id_;
+                write.addr = instr.getAddress();
+                write.data = instr.getData();
+                write.num_of_cache_lines = instr.getNumLines();
+                write.start_cache_line = instr.getStartLine();
+                write.qos = qos_;
+                write.type = MessageType::WRITE_MEM;
+                sendMessageToCache(write);
+                break;
+            }
+
+            case InstructionType::INVALIDATE: {
+                {
+                    std::cout << "[PE " << static_cast<int>(id_) << "] La instrucción a ejecutar es INVALIDATE\n";
+                }
+
+                BroadcastInvalidateMessage inv;
+                inv.src = id_;
+                inv.src_cache_line = instr.getCacheLine();
+                inv.type = MessageType::BROADCAST_INVALIDATE;
+                sendMessageToCache(inv);
+                break;
+            }
+
+            default:
+                std::cerr << "[PE " << static_cast<int>(id_) << "] Unknown instruction type\n";
+                break;
         }
 
         stats_.instructionsExecuted++;
 
-        Event doneEvent;
-
-        // Current time + latency
-        doneEvent.timestamp = clock_.now() + 10; // Schedule this event to happen 10 logical time units after now
-        doneEvent.pe_id = id_;
-        doneEvent.action = "instruction_done";
-
-        clock_.add_event(doneEvent);
-
+        // Esperar a que se dispare el evento "instruction_done"
         std::unique_lock<std::mutex> lock(pe_mutex_);
         pe_cv_.wait(lock);
     }
 
-    // Notify the PE with id_ finished
+    // Notificar que este PE terminó
     clock_.notify_pe_finished(id_);
 }
 
 
+
 void PE::onEvent(const Event& event) {
     if (event.action == "instruction_done") {
-        std::lock_guard<std::mutex> cout_lock(cout_mutex);
-        std::cout << "PE " << static_cast<int>(id_) << " reanuda ejecución\n";
-        std::unique_lock<std::mutex> lock(pe_mutex_);
-        pe_cv_.notify_all();
+        {
+            std::lock_guard<std::mutex> cout_lock(cout_mutex);
+            std::cout << "PE " << static_cast<int>(id_) << " reanuda ejecución\n";
+        }
+
+        {
+            std::lock_guard<std::mutex> lock(pe_mutex_);
+            pe_cv_.notify_all();
+        }
     }
 }
 

@@ -6,51 +6,35 @@
 #include <queue>
 #include <mutex>
 #include <unordered_map>
-#include "../Clock/EventClock.h"
 #include "../Messages/Messages.h"
 #include "../RAM/FileMemory.h"
-//Forward declaration
+
+// Forward declarations
 class Cache;
+class EventClock;  // ✅ Agrega esto para evitar la inclusión circular
 
 class Interconnect {
 
 public:
-    Interconnect();  // <--- ESTA LÍNEA ES NECESARIA
-
-//    explicit Interconnect(EventClock* clock);
+    Interconnect();
 
     void register_cache(uint8_t cache_id, Cache* cache);
-
-    //Called by PEs to send a message
     void send(uint8_t src_pe, const Message& msg);
-
-    //Called by EventClock when event happens
     void process_next();
-
-    //sendMessage to cache
     void sendMessage(const Message& msg);
-
     void receiveMessage(const Message& msg);
 
-
+    void set_clock(EventClock* clock) { clock_ = clock; }  // ✅ Método para asignar el clock
 
 private:
-
-    //Simulation control (scheduling, source, message)
     FileMemory memory;
-    struct QueuedMessage {
-        Message msg; // Original Message (ReadMem, WriteResp...)
-        uint8_t src_pe; // Sender
-        uint64_t scheduled_time; // EventClock timestamp
-    };
 
-    std::queue<QueuedMessage> fifo_;
+    std::queue<Message> fifo_;
     std::mutex fifo_mutex_;
     EventClock* clock_;
 
     std::unordered_map<uint8_t, Cache*> caches_;
 
-    // Helpers
     uint64_t getLatencyForMessage(const Message& msg);
     uint8_t getMessageDestination(const Message& msg);
 };
