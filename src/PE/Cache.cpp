@@ -10,34 +10,19 @@
 #include <mutex>
 
 // Constructor
-Cache::Cache()
-    : owner_pe_(nullptr), interconnect_(nullptr),
-      reads_(0), writes_(0), invalidations_(0) {
-    for (auto& line : cache_lines_) {
+Cache::Cache(PE* owner_pe)
+    : owner_pe(owner_pe), interconnect_(nullptr), reads_(0), writes_(0), invalidations_(0) {
+    // Initialize all cache lines
+    for (auto &line: cache_lines_) {
         line.valid = false;
         line.tag = 0;
         line.data.fill(0);
     }
 }
 
+// Destructor
 Cache::~Cache() = default;
 
-void Cache::setOwnerPE(PE* pe) {
-    owner_pe_ = pe;
-    std::cout << "[Cache] owner_pe set to PE " << static_cast<int>(pe->getPE_id()) << "\n";
-}
-
-void Cache::setInterconnect(Interconnect* ic) {
-    interconnect_ = ic;
-    if (owner_pe_)
-        std::cout << "[Cache] Interconnect pointer set for PE " << static_cast<int>(owner_pe_->getPE_id()) << "\n";
-    else
-        std::cout << "[Cache] Interconnect pointer set for PE ??? (owner_pe is null!)\n";
-}
-
-PE* Cache::getPEOwner() const {
-    return owner_pe_;
-}
 // Read operation - return true if successful
 bool Cache::read(uint32_t address, uint8_t* data, uint16_t size) {
 
@@ -55,22 +40,46 @@ bool Cache::invalidate(uint32_t address) {
     return false; //Line not found in cache
 }
 
+void Cache::setInterconnect(Interconnect* ic) {
+    interconnect_ = ic;
+}
 
 void Cache::receiveMessage(const Message& msg) {
+    if (!owner_pe) {
+        std::cerr << "[Cache] ERROR: owner_pe is null!\n";
+        return;
+    }
 
-    if (getMessageType(msg) == MessageType::READ_MEM ||
-        getMessageType(msg) == MessageType::WRITE_MEM ||
-        getMessageType(msg) == MessageType::BROADCAST_INVALIDATE) {
-        //Notify interconnect
-        interconnect_->send(getPEOwner()->getPE_id(), msg);
-    }
-    else if (getMessageType(msg)== MessageType::READ_RESP ||
-            getMessageType(msg) == MessageType::WRITE_RESP ||
-            getMessageType(msg)== MessageType::INV_ACK ||
-            getMessageType(msg) == MessageType::INV_COMPLETE) {
-        //Notify owner
-        owner_pe_->receiveMessageFromCache(msg);
-    }
+    // Debug output
+    std::cout << "[Cache] Received message: " << messageToString(msg) << std::endl;
+
+    MessageType msgType = getMessageType(msg);
+
+    if (msgType == MessageType::READ_MEM ||
+        msgType == MessageType::WRITE_MEM ||
+        msgType == MessageType::BROADCAST_INVALIDATE) {
+        std::cout << "[Cache] Mensaje dirigido para el Interconnect" << std::endl;
+
+        // Verify interconnect is initialized
+        if (!interconnect_) {
+            std::cerr << "[Cache] ERROR: interconnect_ is null! Make sure register_cache was called." << std::endl;
+            return;
+        }
+
+        // Forward message to interconnect
+        interconnect_->receiveMessage(msg);
+        }
+    else if (msgType == MessageType::READ_RESP ||
+             msgType == MessageType::WRITE_RESP ||
+             msgType == MessageType::INV_ACK ||
+             msgType == MessageType::INV_COMPLETE) {
+        std::cout << "[Cache] Mensaje dirigido para el OwnerPE" << std::endl;
+
+        // Forward message to owner PE
+        owner_pe->receiveMessageFromCache(msg);
+        } else {
+            std::cerr << "[Cache] ERROR: owner_pe is null when forwarding response!" << std::endl;
+        }
 }
 
 
@@ -93,6 +102,12 @@ uint32_t Cache::getOffset(uint32_t address) const {
     return address % CACHE_LINE_SIZE;
 }
 
+
+
+// Get PE ID
+PE* Cache::getPEOwner() const {
+    return this->owner_pe;
+}
 
 // Convert address to cache block index
 uint32_t Cache::addressToBlockIndex(uint32_t address) const {

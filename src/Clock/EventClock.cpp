@@ -3,8 +3,15 @@
 #include "../../include/Interconnect/Interconnect.h"
 #include <iostream>
 
+// Constructor
 EventClock::EventClock(ClockMode mode)
-    : mode_(mode), interconnect_(nullptr) {}
+    : mode_(mode),
+      interconnect_(nullptr),
+      running_(true),
+      current_time(0),
+      pes_finished(0),
+      total_pes(0)
+{}
 
 void EventClock::set_interconnect(Interconnect* interconnect) {
     interconnect_ = interconnect;
@@ -13,78 +20,59 @@ void EventClock::set_interconnect(Interconnect* interconnect) {
 void EventClock::add_event(const Event& e) {
     {
         std::lock_guard<std::mutex> lock(mutex_);
+
         event_queue.push(e);
+
     }
     cv_.notify_all();
 }
 
 void EventClock::run() {
+    // Stepping: wait for input thread ready
+    if (mode_ == ClockMode::Stepping) {
+        std::unique_lock<std::mutex> lk(step_mutex_);
+        input_ready_cv_.wait(lk, [this]{ return input_thread_ready_; });
+    }
+
     while (running_) {
-        std::unique_lock<std::mutex> lock(mutex_);
-        cv_.wait(lock, [this]() { return !event_queue.empty() || !running_; });
-
-        if (!running_) break;
-
-        Event e = event_queue.top();
-        event_queue.pop();
-        current_time = e.timestamp;
-
-        lock.unlock();
-
-        // Show event execution
+        Event e;
         {
-            std::lock_guard<std::mutex> cout_lock(cout_mutex);
-            std::cout << "[T=" << std::dec << current_time << "] Evento: "
-                      << e.action << " en PE " << e.pe_id << "\n";
+            std::unique_lock<std::mutex> lk(mutex_);
+            cv_.wait(lk, [this]{ return !event_queue.empty() || !running_; });
+            if (!running_) break;
+            e = event_queue.top();
+            event_queue.pop();
+
+            current_time = e.timestamp;
         }
 
-        // Handle Interconnect events
+
+
+        if (mode_ == ClockMode::Stepping) {
+            std::cout << "[T=" << current_time << "] Press [Enter] to continue or 'q' to quit: ";
+            std::cout.flush();
+            std::unique_lock<std::mutex> lk(step_mutex_);
+            step_cv_.wait(lk, [this]{ return step_ready_; });
+            step_ready_ = false;
+        }
         if (e.action == "interconnect_process" && interconnect_) {
             interconnect_->process_next();
-            continue;  // Nothing else to do
-        }
-
-        // Handle PE events
-        if (handlers_.count(e.pe_id)) {
+        } else if (handlers_.count(e.pe_id)) {
             handlers_[e.pe_id](e);
         }
 
-        if (mode_ == ClockMode::Stepping)
-            break;
-    }
-}
-
-bool EventClock::run_step() {
-    std::unique_lock<std::mutex> lock(mutex_);
-
-    if (event_queue.empty())
-        return false;
-
-    Event e = event_queue.top();
-    event_queue.pop();
-    current_time = e.timestamp;
-
-    lock.unlock();
-
-    {
-        std::lock_guard<std::mutex> cout_lock(cout_mutex);
-        std::cout << "[T=" << std::dec << current_time << "] Evento: "
-                  << e.action << " en PE " << e.pe_id << "\n";
     }
 
-    // Handle Interconnect events
-    if (e.action == "interconnect_process" && interconnect_) {
-        interconnect_->process_next();
-    } else if (handlers_.count(e.pe_id)) {
-        handlers_[e.pe_id](e);
+    // Shutdown: notify all PEs
+    for (auto& kv : handlers_) {
+        kv.second({ .timestamp = 0, .pe_id = kv.first, .action = "shutdown" });
     }
-
-    return true;
 }
 
 void EventClock::stop() {
     running_ = false;
     cv_.notify_all();
+    step_cv_.notify_all();
 }
 
 uint64_t EventClock::now() const {
@@ -104,7 +92,7 @@ void EventClock::notify_pe_finished(int pe_id) {
     pes_finished++;
 
     {
-        std::lock_guard<std::mutex> cout_lock(cout_mutex);
+        //std::lock_guard<std::mutex> cout_lock(cout_mutex);
         std::cout << "PE " << pe_id << " ha terminado. Total terminados: "
                   << pes_finished << "/" << total_pes << "\n";
     }
@@ -113,8 +101,10 @@ void EventClock::notify_pe_finished(int pe_id) {
 }
 
 void EventClock::wait_until_all_pes_finished() {
-    std::unique_lock<std::mutex> lock(finish_mutex_);
-    finish_cv_.wait(lock, [this]() {
-        return pes_finished >= total_pes;
-    });
+    std::unique_lock<std::mutex> lk(finish_mutex_);
+    finish_cv_.wait(lk, [this]{ return pes_finished >= total_pes; });
+}
+
+ClockMode EventClock::get_mode() {
+    return mode_;
 }

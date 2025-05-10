@@ -53,8 +53,10 @@ struct WriteMemMessage : public MessageBase {
 //READ_MEM: Leer de memoria
 //PARAMETROS:SRC, ADDR, SIZE, QoS
 struct ReadMemMessage : public MessageBase {
+    uint16_t src;
     uint32_t addr;
     uint16_t size;
+    uint8_t qos;
 
     ReadMemMessage() {
         type = MessageType::READ_MEM;
@@ -139,8 +141,9 @@ using Message = std::variant<
 MessageType getMessageType(const Message& msg);
 MessageType setMessageType(const Message& msg);
 uint8_t getMessageSource(const Message& msg);
+uint32_t getMessageAddress(const Message& msg);
+size_t getMessageSize(const Message& msg);
 uint8_t getMessageQoS(const Message& msg);
 std::string messageToString(const Message& msg);
-std::string getMessageTypeString(const Message& msg);
 size_t calculateMessageSize(const Message& msg);
 #endif //MESSAGE_H

@@ -29,7 +29,6 @@ class Interconnect; // Declaración anticipada
 class PE {
 public:
     PE(uint8_t id, uint8_t qos, EventClock& clock);
-    void initialize();
 
     ~PE();
 
@@ -55,8 +54,16 @@ public:
     Statistics getStatistics() const;
 
     uint8_t getPE_id() const;
+    uint8_t getPE_qos() const;
 
     Cache& getCache();
+
+    std::mutex                inbox_mtx_;
+    std::condition_variable   inbox_cv_;
+    std::queue<Event>         inbox_;
+
+    void enqueueEvent(const Event& e);
+
 
 
 private:

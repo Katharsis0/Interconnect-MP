@@ -13,9 +13,10 @@ enum class InstructionType {
 class Instruction {
 public:
     Instruction(InstructionType type, uint32_t address);
+    Instruction(InstructionType type, uint32_t address, uint16_t size);
 
     Instruction(InstructionType type, uint32_t address,
-                uint16_t size, uint8_t lines, uint32_t start, std::vector<uint8_t> data);
+                uint16_t size, uint8_t lines, uint32_t start, uint32_t cache_line, std::vector<uint8_t> data);
 
 
     InstructionType getType() const;
@@ -23,6 +24,7 @@ public:
     uint16_t getSize() const;
     uint8_t getNumLines() const;
     uint32_t getStartLine() const;
+    uint32_t getCacheLine() const;
     const std::vector<uint8_t>& getData() const;
 
 private:
@@ -32,6 +34,7 @@ private:
     uint16_t size;
     uint8_t num_of_cache_lines;
     uint32_t start_cache_line;
+    uint32_t cache_line;
     std::vector<uint8_t> data;
 };
 

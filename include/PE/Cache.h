@@ -14,8 +14,6 @@ constexpr uint16_t CACHE_LINE_SIZE = 16;      // 16 bytes per cache line
 constexpr uint16_t CACHE_BLOCK_COUNT = 128;
 
 class PE;
-class Interconnect;
-
 class Cache {
 public:
 
@@ -28,15 +26,12 @@ public:
             data.fill(0);
         }
     };
+    std::array<CacheLine, CACHE_BLOCK_COUNT> cache_lines_;
+
 
     // Constructor y destructor
-    explicit Cache();
+    explicit Cache(PE* owner_pe);
     ~Cache();
-
-
-    // Setters
-    void setOwnerPE(PE* pe);
-    void setInterconnect(Interconnect* interconnect);
 
     // Operaciones de caché
     bool read(uint32_t address, uint8_t* data, uint16_t size);
@@ -44,12 +39,16 @@ public:
     bool invalidate(uint32_t address);
     void receiveMessage(const Message& msg);
 
+    // Setters
+    void setInterconnect(Interconnect* ic);
 
     // Getters y utilidades
     uint32_t getTag(uint32_t address) const;
     uint32_t getIndex(uint32_t address) const;
     uint32_t getOffset(uint32_t address) const;
     PE* getPEOwner() const;
+
+
 
     // Estadísticas
     void printCacheContents() const;
@@ -59,10 +58,11 @@ public:
     uint32_t addressToBlockIndex(uint32_t address) const;
     uint32_t alignAddress(uint32_t address) const;
 
+    Interconnect* getInterconnect() const { return interconnect_; }
+
 private:
-    PE* owner_pe_ = nullptr;
-    Interconnect* interconnect_ = nullptr;
-    std::array<CacheLine, CACHE_BLOCK_COUNT> cache_lines_;
+    PE* owner_pe; // PE propietario de esta caché
+    Interconnect* interconnect_; // Interconector, debe asignarse con setInterconnect()
     std::mutex cache_mutex_; // Protección para concurrencia
 
     // Mensaje temporal (si se requiere)
