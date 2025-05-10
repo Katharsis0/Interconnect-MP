@@ -72,6 +72,7 @@ void Cache::receiveMessage(const Message& msg) {
 
         // Construct message to forward to interconnect
         WriteMemMessage forward;
+        forward.type= getMessageType(msg);
         forward.src = getMessageSource(msg);
         forward.addr = getMessageAddress(msg);
         forward.start_cache_line = getCacheLine(msg);

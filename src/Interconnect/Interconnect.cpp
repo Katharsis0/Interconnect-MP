@@ -27,8 +27,16 @@ Interconnect::Interconnect() : memory("RAM/memory.mif") {
 void Interconnect::sendMessage(const Message& msg) {
 
 }
-
 void Interconnect::receiveMessage(const Message &msg) {
+    std::cout << "El interconnect está recibiendo el mensaje: \n";
+    std::cout << messageToString(msg) << "\n";
+
+    //Solo encolar, no procesar
+    uint8_t src = getMessageSource(msg);
+    send(src, msg);  // delega al scheduler
+}
+
+/*void Interconnect::receiveMessage(const Message &msg) {
     std::cout << "El interconnect está recibiendo el mensaje: \n" ;
     std::cout << messageToString(msg) ;
     MessageType type = getMessageType(msg);
@@ -100,7 +108,7 @@ void Interconnect::receiveMessage(const Message &msg) {
             std::cerr << "[Interconnect] Unsupported message type\n";
             break;
     }
-}
+}*/
 
 
 
@@ -144,49 +152,99 @@ void Interconnect::process_next() {
 
     MessageType type = getMessageType(msg);
 
-    // Should manage memory access
 
     switch (type)
     {
-        case MessageType::WRITE_MEM:
+        case MessageType::WRITE_MEM: {
+            const auto& writeMsg = std::get<WriteMemMessage>(msg);
 
-        case MessageType::READ_MEM: {
-            for (const auto& [cache_id, cache_ptr] : caches_)
             {
                 std::lock_guard<std::mutex> cout_lock(cout_mutex);
-                std::cout << "[PE Owner] " << cache_ptr->getPEOwner()->getPE_id() << "\n";
-                cache_ptr->receiveMessage(msg);
+                std::cout << "[Interconnect] Processing WRITE_MEM from PE "
+                          << static_cast<int>(writeMsg.src) << " to addr 0x"
+                          << std::hex << writeMsg.addr << " ("
+                          << std::dec << writeMsg.data.size() << " words)\n";
+            }
+
+            // Depuración: Verificación de address y data
+            {
+                std::lock_guard<std::mutex> cout_lock(cout_mutex);
+                std::cout << "[Debug] WRITE_MEM - Addr: 0x" << std::hex << writeMsg.addr << std::dec << "\n";
+                std::cout << "[Debug] WRITE_MEM - Data: ";
+                for (const auto& byte : writeMsg.data) {
+                    std::cout << std::hex << static_cast<int>(byte) << " ";
+                }
+                std::cout << std::dec << "\n";
+            }
+
+            // Intentar escritura
+            WriteRespMessage resp;
+            resp.src = 0xFF;  // Interconnect
+            resp.dest = writeMsg.src;
+            resp.qos = writeMsg.qos;
+            resp.timestamp = clock_->now();
+
+            if (memory.canWrite(writeMsg.addr, writeMsg.data.size())) {
+                memory.write(writeMsg.addr, writeMsg.data);
+                resp.status = 0x1;  // OK
+            } else {
+                std::cerr << "[Interconnect] Memory write FAILED at 0x"
+                          << std::hex << writeMsg.addr << std::dec << "\n";
+                resp.status = 0x0;  // ERROR
+            }
+
+            // Enviar mensaje de respuesta
+            if (caches_.count(resp.dest)) {
+                caches_[resp.dest]->receiveMessage(resp);
             }
             break;
         }
 
-        case MessageType::BROADCAST_INVALIDATE:
-            {
-                // Broadcast to all except source
-                // Cache invalidation: send to everyone except self
-                for (const auto& [cache_id, cache_ptr] : caches_)
-                {
-                    std::lock_guard<std::mutex> cout_lock(cout_mutex);
-                    std::cout << "[TEST] " << cache_ptr->getPEOwner()->getPE_id() << "\n";
-                    if (1 == getMessageSource(msg)) continue; // If it is the source iterate again for all others
-                    cache_ptr->receiveMessage(msg);
-                }
-                break;
-            }
 
 
-        case MessageType::INV_ACK:
-        case MessageType::INV_COMPLETE:
-        case MessageType::READ_RESP:
-        case MessageType::WRITE_RESP:
-            {
-                uint8_t dest = getMessageDestination(msg);
-                // Looks up destination PE
-                if (caches_.count(dest)) {
-                    caches_[dest]->receiveMessage(msg); // If exists, destination receives message for aknowledgement
-                }
+        case MessageType::READ_MEM: {
+            const auto& readMsg = std::get<ReadMemMessage>(msg);
+
+            // Make sure address is valid before accessing memory
+            std::cout << "[Interconnect] Attempting READ from 0x" << std::hex << readMsg.addr
+                      << " (" << std::dec << readMsg.size << " bytes)" << std::endl;
+
+            std::vector<uint32_t> data = memory.read(readMsg.addr, readMsg.size);
+
+            std::cout << "[Interconnect] READ from 0x" << std::hex << readMsg.addr
+                      << " (" << std::dec << readMsg.size << " bytes): ";
+            for (uint8_t byte : data) {
+                std::cout << std::setw(2) << std::setfill('0') << std::hex << (int)byte << " ";
             }
+            std::cout << std::dec << std::endl;
+
+            // Get source PE ID for response
+            uint8_t dest = readMsg.src;
+
+            // Check if destination is registered
+            if (caches_.find(dest) == caches_.end()) {
+                std::cerr << "[Interconnect] ERROR: Cache ID " << (int)dest << " not registered\n";
+                return;
+            }
+
+            // Create response message
+            ReadRespMessage resp;
+            resp.src = readMsg.src;  //PE source
+            resp.dest = dest;
+            resp.qos = readMsg.qos;
+            resp.data = data;
+            resp.type = MessageType::READ_RESP;  // Ensure type is set correctly
+
+            std::cout << "[Interconnect] Sending response: " << messageToString(resp) << std::endl;
+
+            // Send message to destination cache
+            caches_[dest]->receiveMessage(resp);
             break;
+        }
+
+
+
+
     }
 }
 
@@ -195,6 +253,7 @@ uint64_t Interconnect::getLatencyForMessage(const Message& msg) {
 
     switch (type) {
         case MessageType::WRITE_MEM:
+            return 10;
         case MessageType::READ_MEM:
             return 50;
 

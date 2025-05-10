@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     if (argc > 1 && std::string(argv[1]) == "step")
         mode = ClockMode::Stepping;
 
-    constexpr int NUM_PES = 2;
+    constexpr int NUM_PES = 1;
     EventClock clock(mode);
     Interconnect interconnect;
     interconnect.set_clock(&clock);
