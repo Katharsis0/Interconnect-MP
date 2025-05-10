@@ -57,6 +57,13 @@ public:
 
     Cache& getCache();
 
+    std::mutex                inbox_mtx_;
+    std::condition_variable   inbox_cv_;
+    std::queue<Event>         inbox_;
+
+    void enqueueEvent(const Event& e);
+
+
 
 private:
     void run(); // Función principal del thread del PE

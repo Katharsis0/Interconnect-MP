@@ -11,7 +11,7 @@
 
 // Forward declarations
 class Cache;
-class EventClock;  // ✅ Agrega esto para evitar la inclusión circular
+class EventClock;
 
 class Interconnect {
 
@@ -24,7 +24,7 @@ public:
     void sendMessage(const Message& msg);
     void receiveMessage(const Message& msg);
 
-    void set_clock(EventClock* clock) { clock_ = clock; }  // ✅ Método para asignar el clock
+    void set_clock(EventClock* clock) { clock_ = clock; }
 
 private:
     FileMemory memory;
