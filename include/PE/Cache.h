@@ -47,6 +47,8 @@ public:
     uint32_t getIndex(uint32_t address) const;
     uint32_t getOffset(uint32_t address) const;
     PE* getPEOwner() const;
+    std::vector<uint32_t> getDataFromCacheLine(uint32_t start_line, uint32_t num_lines);
+
 
 
 

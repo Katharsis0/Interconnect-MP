@@ -41,7 +41,7 @@ void Interconnect::receiveMessage(const Message &msg) {
             std::cout << "[Interconnect] Attempting READ from 0x" << std::hex << readMsg.addr
                       << " (" << std::dec << readMsg.size << " bytes)" << std::endl;
 
-            std::vector<uint8_t> data = memory.read(readMsg.addr, readMsg.size);
+            std::vector<uint32_t> data = memory.read(readMsg.addr, readMsg.size);
 
             std::cout << "[Interconnect] READ from 0x" << std::hex << readMsg.addr
                       << " (" << std::dec << readMsg.size << " bytes): ";
@@ -73,6 +73,28 @@ void Interconnect::receiveMessage(const Message &msg) {
             caches_[dest]->receiveMessage(resp);
             break;
         }
+            //WRITE_MEM
+        case MessageType::WRITE_MEM: {
+            WriteRespMessage resp;
+            const auto& writeMsg = std::get<WriteMemMessage>(msg);  //
+
+            uint32_t addr = getMessageAddress(msg);
+            const std::vector<uint32_t>& data = getMessageData(msg);
+
+            //cambiar esto
+            if (memory.canWrite(addr, data.size())) {
+                memory.write(addr, data);
+                resp.status = 0x0;
+            } else {
+                resp.status = 0x1;
+            }
+
+            // Enviar el mensaje de respuesta
+            sendMessage(resp);
+            break;
+
+        }
+
 
         default:
             std::cerr << "[Interconnect] Unsupported message type\n";

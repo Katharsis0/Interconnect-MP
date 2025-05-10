@@ -55,7 +55,7 @@ void PE::enqueueEvent(const Event& e) {
 void PE::receiveMessageFromCache(const Message &msg) {
     if (getMessageType(msg) == MessageType::READ_RESP) {
         const auto& resp = std::get<ReadRespMessage>(msg);
-        const std::vector<uint8_t>& data = resp.data;
+        const std::vector<uint32_t>& data = resp.data;
 
         std::cout << "[PE " << static_cast<int>(id_) << "] received READ_RESP with "
                   << data.size() << " bytes.\n";
@@ -141,16 +141,18 @@ void PE::run() {
                     break;
                 }
                 case InstructionType::WRITE: {
-                    WriteMemMessage msg;
-                    msg.src = id_;
-                    msg.addr = instr.getAddress();
-                    msg.data = instr.getData();
-                    msg.num_of_cache_lines = instr.getNumLines();
-                    msg.start_cache_line = instr.getStartLine();
-                    msg.qos  = qos_;
-                    msg.type = MessageType::WRITE_MEM;
-                    sendMessageToCache(msg);
-                    break;
+                    std::cout << "[PE " << static_cast<int>(id_) << "] La instruccion a ejecutar es WRITE\n";
+                    WriteMemMessage write;
+                    //src, address, num of cache lines, start_cache_line, data, qos
+                    write.src = id_;
+                    write.addr = instr.getAddress();
+                    write.data = instr.getData();
+                    write.num_of_cache_lines = instr.getNumLines();
+                    write.start_cache_line = instr.getStartLine();
+                    write.data = cache_.getDataFromCacheLine(write.start_cache_line, write.num_of_cache_lines);
+                    write.type = MessageType::WRITE_MEM; // Ensure type is set correctly
+
+                    sendMessageToCache(write);
                 }
                 case InstructionType::INVALIDATE: {
                     BroadcastInvalidateMessage msg;

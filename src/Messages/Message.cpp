@@ -93,6 +93,19 @@ size_t getMessageSize(const Message& msg) {
     }, msg);
 }
 
+const std::vector<uint32_t>& getMessageData(const Message& msg) {
+    return std::visit([](auto&& arg) -> const std::vector<uint32_t>& {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, WriteMemMessage> || std::is_same_v<T, ReadRespMessage>) {
+            return arg.data;
+        } else {
+            static const std::vector<uint32_t> empty;
+            return empty;
+        }
+    }, msg);
+}
+
+
 
 std::string messageToString(const Message& msg) {
     return std::visit([](auto&& arg) -> std::string { return arg.toString(); }, msg);
@@ -128,5 +141,25 @@ size_t calculateMessageSize(const Message& msg) {
         // INV_ACK no tiene campos adicionales
 
         return size;
+    }, msg);
+}
+
+uint8_t getNumCacheLines(const Message& msg) {
+    return std::visit([](auto&& arg) -> uint8_t {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, WriteMemMessage>) {
+            return arg.num_of_cache_lines;
+        }
+        return 0;
+    }, msg);
+}
+
+uint32_t getCacheLine(const Message& msg) {
+    return std::visit([](auto&& arg) -> uint32_t {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, WriteMemMessage>) {
+            return arg.start_cache_line;
+        }
+        return 0;
     }, msg);
 }

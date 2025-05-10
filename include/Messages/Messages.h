@@ -41,7 +41,7 @@ struct WriteMemMessage : public MessageBase {
     uint32_t addr;                  //mem address
     uint8_t num_of_cache_lines;     //lineas de cache
     uint32_t start_cache_line;      //primera linea de cache
-    std::vector<uint8_t> data;      //Datos
+    std::vector<uint32_t> data;      //Datos
 
     WriteMemMessage() {
         type = MessageType::WRITE_MEM;
@@ -104,7 +104,7 @@ struct InvCompleteMessage : public MessageBase {
 //PARAMETROS: DEST, DATA, QoS
 struct ReadRespMessage : public MessageBase {
     uint8_t dest;               //PE destino
-    std::vector<uint8_t> data;  //Datos a leer
+    std::vector<uint32_t> data;  //Datos a leer
 
     ReadRespMessage() {
         type = MessageType::READ_RESP;
@@ -118,6 +118,7 @@ struct ReadRespMessage : public MessageBase {
 struct WriteRespMessage : public MessageBase {
     uint8_t dest;       //PE destino
     uint8_t status;     //0x1: OK, 0x0: Not_OK
+    std::vector<uint32_t> data;
 
     WriteRespMessage() {
         type = MessageType::WRITE_RESP;
@@ -142,8 +143,13 @@ MessageType getMessageType(const Message& msg);
 MessageType setMessageType(const Message& msg);
 uint8_t getMessageSource(const Message& msg);
 uint32_t getMessageAddress(const Message& msg);
+//const std::vector<unsigned char>& getMessageData(const Message& msg)
+
+const std::vector<uint32_t>&getMessageData (const Message& msg);
 size_t getMessageSize(const Message& msg);
 uint8_t getMessageQoS(const Message& msg);
+uint8_t getNumCacheLines(const Message& msg);
+uint32_t getCacheLine(const Message& msg);
 std::string messageToString(const Message& msg);
 size_t calculateMessageSize(const Message& msg);
 #endif //MESSAGE_H

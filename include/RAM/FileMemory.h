@@ -5,12 +5,15 @@
 #include <vector>
 #include <cstdint>
 #include <map>
+static constexpr uint32_t MAX_MEMORY_BYTES = 4096; // 4KB
 
 class FileMemory {
 public:
     explicit FileMemory(const std::string& mif_path);
-    std::vector<uint8_t> read(uint32_t addr, size_t size);
-    void write(uint32_t addr, const std::vector<uint8_t>& data);
+    std::vector<uint32_t> read(uint32_t addr, size_t size);
+    void write(uint32_t addr, const std::vector<uint32_t>& data);
+    bool canWrite(uint32_t addr, size_t size) const;
+
 
 private:
     std::string filename;

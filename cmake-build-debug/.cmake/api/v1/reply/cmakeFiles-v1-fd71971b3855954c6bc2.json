@@ -39,6 +39,14 @@
 				"/home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp"
 			],
 			"recurse" : true
+		},
+		{
+			"expression" : "/home/tefa/Documents/GitHub/Interconnect-MP/src/*.mif",
+			"paths" : 
+			[
+				"/home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/memory.mif"
+			],
+			"recurse" : true
 		}
 	],
 	"inputs" : 
@@ -920,6 +928,9 @@
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "/home/tefa/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/share/cmake-3.31/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"path" : "src/RAM/memory.mif"
 		}
 	],
 	"kind" : "cmakeFiles",

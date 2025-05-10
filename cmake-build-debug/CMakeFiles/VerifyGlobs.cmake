@@ -44,3 +44,13 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
   file(TOUCH_NOCREATE "/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs")
 endif()
+
+# SOURCES at CMakeLists.txt:13 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/tefa/Documents/GitHub/Interconnect-MP/src/*.mif")
+set(OLD_GLOB
+  "/home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/memory.mif"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs")
+endif()

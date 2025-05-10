@@ -126,6 +126,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.31.6/CMakeSystem.cmake"
   "CMakeFiles/VerifyGlobs.cmake"
   "CMakeFiles/cmake.verify_globs"
+  "/home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/memory.mif"
   )
 
 # The corresponding makefile is:
@@ -141,6 +142,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/3.31.6/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeCCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeCXXCompiler.cmake"
+  "RAM/memory.mif"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

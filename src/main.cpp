@@ -20,10 +20,11 @@ int main(int argc, char* argv[]) {
     clock.set_interconnect(&interconnect);
     clock.set_total_pes(NUM_PES);
 
+
     std::vector<Instruction> program = {
-        {InstructionType::READ,  0x08, 4},
-        {InstructionType::READ,  0x01, 4},
-        {InstructionType::READ,  0x02, 4}
+        Instruction(InstructionType::READ, 0x08, 4),  // Each PE reads same address deberia ser BE
+        Instruction(InstructionType::WRITE, 0x01, 1, 0, 1)  // Each PE reads same address AD -> BE
+
     };
 
     std::vector<std::unique_ptr<PE>> pes;

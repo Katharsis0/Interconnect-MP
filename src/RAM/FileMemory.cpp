@@ -50,8 +50,10 @@ void FileMemory::writeToMIF() {
     file << "END;\n";
 }
 
-std::vector<uint8_t> FileMemory::read(uint32_t addr, size_t size) {
-    std::vector<uint8_t> result;
+
+
+std::vector<uint32_t> FileMemory::read(uint32_t addr, size_t size) {
+    std::vector<uint32_t> result;
     for (size_t i = 0; i < size; ++i) {
         uint32_t word_addr = (addr + i) / 4;
         uint32_t offset = (addr + i) % 4;
@@ -62,7 +64,23 @@ std::vector<uint8_t> FileMemory::read(uint32_t addr, size_t size) {
     return result;
 }
 
-void FileMemory::write(uint32_t addr, const std::vector<uint8_t>& data) {
+void FileMemory::write(uint32_t addr, const std::vector<uint32_t>& data) {
+    for (size_t i = 0; i < data.size(); ++i) {
+        uint32_t word_addr = (addr / 4) + i;
+        memory[word_addr] = data[i];
+    }
+}
+
+
+bool FileMemory::canWrite(uint32_t addr, size_t size) const {
+    // Si addr es mayor que el máximo permitido, o el rango [addr, addr+size) se pasa
+    if (addr + size > MAX_MEMORY_BYTES) {
+        return false;
+    }
+    return true;
+}
+
+/*void FileMemory::write(uint32_t addr, const std::vector<uint8_t>& data) {
     for (size_t i = 0; i < data.size(); ++i) {
         uint32_t byte_addr = addr + i;
         uint32_t word_addr = byte_addr / 4;
@@ -74,4 +92,4 @@ void FileMemory::write(uint32_t addr, const std::vector<uint8_t>& data) {
     }
 
     writeToMIF();
-}
+}*/
