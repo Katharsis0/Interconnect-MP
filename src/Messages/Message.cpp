@@ -15,6 +15,7 @@ std::string WriteMemMessage::toString() const {
     return oss.str();
 }
 
+
 std::string ReadMemMessage::toString() const {
     std::ostringstream oss;
     oss << "READ_MEM [SRC:" << (int)src << " QoS:" << (int)qos
@@ -64,13 +65,40 @@ MessageType getMessageType(const Message& msg) {
     return std::visit([](auto&& arg) -> MessageType { return arg.type; }, msg);
 }
 
+uint8_t getMessageQoS(const Message& msg) {
+    return std::visit([](auto const& m) -> uint8_t {
+        return m.qos;
+    }, msg);
+}
+
 uint8_t getMessageSource(const Message& msg) {
     return std::visit([](auto&& arg) -> uint8_t { return arg.src; }, msg);
 }
 
-uint8_t getMessageQoS(const Message& msg) {
-    return std::visit([](auto&& arg) -> uint8_t { return arg.qos; }, msg);
+uint32_t getMessageAddress(const Message& msg) {
+    return std::visit([](auto&& arg) -> uint32_t {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, WriteMemMessage> || std::is_same_v<T, ReadMemMessage>) {
+            return arg.addr;
+        } else {
+            return 0;
+        }
+    }, msg);
 }
+
+
+size_t getMessageSize(const Message& msg) {
+    return std::visit([](auto&& arg) -> size_t {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, ReadMemMessage>) {
+            return arg.size;
+        } else if constexpr (std::is_same_v<T, WriteMemMessage> || std::is_same_v<T, ReadRespMessage>) {
+            return arg.data.size();
+        }
+        return 0;
+    }, msg);
+}
+
 
 std::string messageToString(const Message& msg) {
     return std::visit([](auto&& arg) -> std::string { return arg.toString(); }, msg);
@@ -107,19 +135,4 @@ size_t calculateMessageSize(const Message& msg) {
 
         return size;
     }, msg);
-
 }
-    std::string getMessageTypeString(const Message& msg) {
-        MessageType type = getMessageType(msg);
-
-        switch (type) {
-            case MessageType::WRITE_MEM:             return "WRITE_MEM";
-            case MessageType::READ_MEM:              return "READ_MEM";
-            case MessageType::BROADCAST_INVALIDATE:  return "BROADCAST_INVALIDATE";
-            case MessageType::INV_ACK:               return "INV_ACK";
-            case MessageType::INV_COMPLETE:          return "INV_COMPLETE";
-            case MessageType::READ_RESP:             return "READ_RESP";
-            case MessageType::WRITE_RESP:            return "WRITE_RESP";
-            default:                                 return "UNKNOWN";
-        }
-    }

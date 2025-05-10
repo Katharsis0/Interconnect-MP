@@ -11,7 +11,7 @@ struct Event {
 
     // when the action was _scheduled_ (so we can compute duration)
     uint64_t start_time;
-    std::string scheme = "fifont"; // qos
+    std::string scheme = "fifo"; // qos
 
 
     bool operator>(const Event& other) const {
