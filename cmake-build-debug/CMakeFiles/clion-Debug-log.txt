@@ -1,9 +1,9 @@
-/home/tefa/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=/usr/bin/gcc -G "Unix Makefiles" -S /home/tefa/Documents/GitHub/Interconnect-MP -B /home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug
--- The C compiler identification is GNU 15.1.1
--- The CXX compiler identification is GNU 15.1.1
+/home/katharsis/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/katharsis/.local/share/JetBrains/Toolbox/apps/clion/bin/ninja/linux/x64/ninja -G Ninja -S /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP -B /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug
+-- The C compiler identification is GNU 14.2.1
+-- The CXX compiler identification is GNU 14.2.1
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/gcc - skipped
+-- Check for working C compiler: /usr/bin/cc - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
 -- Detecting CXX compiler ABI info
@@ -15,32 +15,32 @@
 -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
 -- Found Threads: TRUE
 -- Archivos fuente encontrados:
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/Clock/Event.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/Clock/EventClock.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/Clock/Scheduler.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/Global/Global.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/Interconnect/Interconnect.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/MESI/MESIProtocol.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/MESI/MESIState.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/Messages/Messages.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/PE/Cache.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/PE/Instruction.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/PE/InstructionMemory.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/PE/PE.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/include/RAM/FileMemory.h
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/EventClock.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/Scheduler.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/Global/Global.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/Interconnect/Interconnect.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/MESI/MESIProtocol.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/Messages/Message.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Cache.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Instruction.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/InstructionMemory.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/PE/PE.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/FileMemory.cpp
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/memory.mif
--- /home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp
--- Configuring done (0.8s)
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Clock/Event.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Clock/EventClock.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Clock/Scheduler.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Global/Global.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Interconnect/Interconnect.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/MESI/MESIProtocol.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/MESI/MESIState.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Messages/Messages.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/PE/Cache.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/PE/Instruction.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/PE/InstructionMemory.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/PE/PE.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/RAM/FileMemory.h
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Clock/EventClock.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Clock/Scheduler.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Global/Global.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Interconnect/Interconnect.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/MESI/MESIProtocol.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Messages/Message.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/PE/Cache.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/PE/Instruction.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/PE/InstructionMemory.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/PE/PE.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/RAM/FileMemory.cpp
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/RAM/memory.mif
+-- /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/main.cpp
+-- Configuring done (1.9s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug
+-- Build files have been written to: /home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug

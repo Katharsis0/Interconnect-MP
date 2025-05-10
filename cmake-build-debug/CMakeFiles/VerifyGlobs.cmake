@@ -3,54 +3,54 @@
 cmake_policy(SET CMP0009 NEW)
 
 # SOURCES at CMakeLists.txt:13 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/tefa/Documents/GitHub/Interconnect-MP/include/*.h")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/*.h")
 set(OLD_GLOB
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/Clock/Event.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/Clock/EventClock.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/Clock/Scheduler.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/Global/Global.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/Interconnect/Interconnect.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/MESI/MESIProtocol.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/MESI/MESIState.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/Messages/Messages.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/PE/Cache.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/PE/Instruction.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/PE/InstructionMemory.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/PE/PE.h"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/include/RAM/FileMemory.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Clock/Event.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Clock/EventClock.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Clock/Scheduler.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Global/Global.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Interconnect/Interconnect.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/MESI/MESIProtocol.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/MESI/MESIState.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/Messages/Messages.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/PE/Cache.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/PE/Instruction.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/PE/InstructionMemory.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/PE/PE.h"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include/RAM/FileMemory.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs")
 endif()
 
 # SOURCES at CMakeLists.txt:13 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/tefa/Documents/GitHub/Interconnect-MP/src/*.cpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/*.cpp")
 set(OLD_GLOB
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/EventClock.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/Clock/Scheduler.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/Global/Global.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/Interconnect/Interconnect.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/MESI/MESIProtocol.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/Messages/Message.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Cache.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/PE/Instruction.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/PE/InstructionMemory.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/PE/PE.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/FileMemory.cpp"
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/main.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Clock/EventClock.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Clock/Scheduler.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Global/Global.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Interconnect/Interconnect.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/MESI/MESIProtocol.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/Messages/Message.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/PE/Cache.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/PE/Instruction.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/PE/InstructionMemory.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/PE/PE.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/RAM/FileMemory.cpp"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/main.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs")
 endif()
 
 # SOURCES at CMakeLists.txt:13 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/tefa/Documents/GitHub/Interconnect-MP/src/*.mif")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/*.mif")
 set(OLD_GLOB
-  "/home/tefa/Documents/GitHub/Interconnect-MP/src/RAM/memory.mif"
+  "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/src/RAM/memory.mif"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "/home/tefa/Documents/GitHub/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/cmake-build-debug/CMakeFiles/cmake.verify_globs")
 endif()

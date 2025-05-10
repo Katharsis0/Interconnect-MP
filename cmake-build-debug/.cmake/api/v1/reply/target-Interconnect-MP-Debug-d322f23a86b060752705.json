@@ -42,14 +42,14 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu++20"
+					"fragment" : "-g -std=gnu++20 -fdiagnostics-color=always"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 2,
-					"path" : "/home/tefa/Documents/GitHub/Interconnect-MP/include"
+					"path" : "/home/katharsis/Documents/TEC/1S2025/Arqui2/Interconnect-MP/include"
 				}
 			],
 			"language" : "CXX",

@@ -154,14 +154,7 @@ void PE::run() {
 
                     sendMessageToCache(write);
                 }
-                case InstructionType::INVALIDATE: {
-                    BroadcastInvalidateMessage msg;
-                    msg.src = id_;
-                    msg.src_cache_line = instr.getCacheLine();
-                    msg.type = MessageType::BROADCAST_INVALIDATE;
-                    sendMessageToCache(msg);
-                    break;
-                }
+
                 default: break;
             }
             stats_.instructionsExecuted++;
